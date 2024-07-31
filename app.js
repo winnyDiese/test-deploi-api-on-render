@@ -7,7 +7,8 @@ const port = 3000
 const router = express.Router()
 router.get('/',(req,res)=>{
     res.json({
-        "hello":"hi"
+        "Pascal-message":"Salut Boss...",
+        "Pascal-message-2":"Armel ton api est deja en ligne..."
     })
 })
 
