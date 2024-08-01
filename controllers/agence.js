@@ -9,7 +9,7 @@ connect_mongodb()
 const all_agence = async (req,res)=>{
     try {
         const agences = await Agence.find()
-        res.json(agences)
+        res.status(200).json(agences)
     } catch (error) {
         console.log(error)
         res.status(500).send('Une erreur est survenus !')
@@ -17,11 +17,17 @@ const all_agence = async (req,res)=>{
 }
 
 const add_agence = async (req,res) => {
+    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = req.body
+    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active})
+    
     try {
-        const agence = new Agence()
+        const saved_agence = await new_agence.save()
+        res.status(201).json(saved_agence)
     } catch (error) {
-        
+        console.log(error)
+        res.status(500).json(error.message)
+
     }
 }
 
-module.exports = {all_agence}
+module.exports = {all_agence, add_agence}
