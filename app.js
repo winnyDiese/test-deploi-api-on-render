@@ -8,7 +8,10 @@ const port = 3000
 app.use(express.json())
 
 
-const routerAgence = require('./routers/agence')
-app.use('/api',routerAgence)
+const router_agence = require('./routers/agence')
+const router_pays = require('./routers/pays')
+
+app.use('/api',router_agence)
+app.use('/api',router_pays)
 
 app.listen(port, console.log('Console running on '+port+' port'))
