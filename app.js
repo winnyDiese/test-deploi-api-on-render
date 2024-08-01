@@ -11,9 +11,11 @@ app.use(express.json())
 // Calling router
 const router_agence = require('./routers/agence')
 const router_pays = require('./routers/pays')
+const router_ville = require('./routers/ville')
 
 // Using router
 app.use('/api',router_agence)
 app.use('/api',router_pays)
+app.use('/api',router_ville)
 
 app.listen(port, console.log('Console running on '+port+' port'))
