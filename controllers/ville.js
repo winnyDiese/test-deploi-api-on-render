@@ -5,10 +5,10 @@ const Ville = require('../models/ville')
 
 connect_mongodb()
 
-const all_pays = async (req,res)=>{
+const all_ville = async (req,res)=>{
     try {
-        const pays = await Pays.find()
-        res.status(200).json(pays)
+        const ville = await Ville.find()
+        res.status(200).json(ville)
     } catch (error) {
         console.log(error)
         res.status(500).send('Une erreur est survenus !')
@@ -16,18 +16,18 @@ const all_pays = async (req,res)=>{
 }
 
 
-const add_pays = async (req,res)=>{
-    const {nomPays, indicatif} = await req.body
+const add_ville = async (req,res)=>{
+    const {nomVille, id_pays} = await req.body
     
-    const new_pays = new Pays({nomPays, indicatif})
+    const new_ville = new Ville({nomVille, id_pays})
 
     try {
-        const saved_pays = await new_pays.save()
-        res.status(201).json(saved_pays)
+        const saved_ville = await new_ville.save()
+        res.status(201).json(saved_ville)
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
     }
 }
 
-module.exports = {all_pays, add_pays}
+module.exports = {all_ville, add_ville}
