@@ -1,10 +1,10 @@
 
-import mongoose, {Schema}  from "mongoose"
+// import mongoose, {Schema}  from "mongoose"
+const mongoose = require('mongoose')
 
-const paysSchema = new Schema({
+const paysSchema = new mongoose.Schema({
     // name: String,
     // indicateur: String
-
 
     nomPays:String,
     indicatif:String

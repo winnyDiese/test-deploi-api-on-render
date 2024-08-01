@@ -8,9 +8,11 @@ const port = 3000
 app.use(express.json())
 
 
+// Calling router
 const router_agence = require('./routers/agence')
 const router_pays = require('./routers/pays')
 
+// Using router
 app.use('/api',router_agence)
 app.use('/api',router_pays)
 
