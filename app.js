@@ -1,10 +1,14 @@
 
 const express = require('express')
+const connect_mongodb = require('./lib/connect_db')
 const app = express()
 
 const port = 3000
 
 const router = express.Router()
+
+connect_mongodb()
+
 router.get('/',(req,res)=>{
     res.json({
         "Pascal-message":"Salut Boss...",
