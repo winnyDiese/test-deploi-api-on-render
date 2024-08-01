@@ -7,7 +7,7 @@ const port = 3000
 
 
 const routerAgence = require('./routers/agence')
-app.use('/api/agence',routerAgence)
+app.use('/api',routerAgence)
 
 app.listen(port, console.log('Console running on '+port+' port'))
 
