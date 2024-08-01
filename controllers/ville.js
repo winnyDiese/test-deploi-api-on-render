@@ -18,7 +18,6 @@ const all_ville = async (req,res)=>{
 
 const add_ville = async (req,res)=>{
     const {nomVille, id_pays} = await req.body
-    
     const new_ville = new Ville({nomVille, id_pays})
 
     try {
