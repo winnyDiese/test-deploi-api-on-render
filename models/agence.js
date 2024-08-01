@@ -1,6 +1,6 @@
-import mongoose, {Schema}  from "mongoose"
+const mongoose = require('mongoose')
 
-const agenceSchema = new Schema({
+const agenceSchema = new mongoose.Schema({
     // agence: String,
     // email: String,
     // tel: String,
