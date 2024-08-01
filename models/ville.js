@@ -1,7 +1,8 @@
 
-import mongoose,  { Schema } from "mongoose"
+// import mongoose,  { Schema } from "mongoose"
+const mongoose = require('mongoose')
 
-const villeSchema = new Schema({ 
+const villeSchema = new mongoose.Schema({ 
     // name: String,
     // contry: String
 
@@ -11,5 +12,7 @@ const villeSchema = new Schema({
 },{ timestamps: true })
 
 const Ville = mongoose.models.Ville || mongoose.model('Ville', villeSchema)
-export default Ville
+// export default Ville
+
+module.exports = Ville
 
