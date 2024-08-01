@@ -30,4 +30,18 @@ const add_user = async (req,res)=>{
     }
 }
 
-module.exports = {all_user, add_user}
+const user_login = async (req,res)=>{
+    const {phoneUser, passwordUser} = await req.body
+    
+    try {
+        const user = await User.findOne({phoneUser,passwordUser})
+        if(!user) res.status(401).send('Mot de passe ou numéro de télephone non valide...')
+        
+        res.status(201).json(user)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Erreur de mot de passe...')
+    }
+}
+
+module.exports = {all_user, add_user, user_login}
