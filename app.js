@@ -1,6 +1,5 @@
 
 const express = require('express')
-const connect_mongodb = require('./lib/connect_db')
 const app = express()
 
 const port = 3000
