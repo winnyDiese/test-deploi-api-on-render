@@ -17,7 +17,7 @@ const all_user = async (req,res)=>{
 }
 
 
-const add_ville = async (req,res)=>{
+const add_user = async (req,res)=>{
     const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser } = await req.body
     const new_user = new User({nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser })
 
@@ -30,4 +30,4 @@ const add_ville = async (req,res)=>{
     }
 }
 
-module.exports = {all_ville, add_ville}
+module.exports = {all_user, add_user}
