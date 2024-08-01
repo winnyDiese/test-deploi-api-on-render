@@ -1,7 +1,6 @@
 
 const express = require('express')
 const connect_mongodb = require('./lib/connect_db')
-const agence = require('./routers/agence')
 const app = express()
 
 const port = 3000
@@ -17,6 +16,7 @@ connect_mongodb()
 //     })
 // })
 
-app.use('/agence',agence)
+const routerAgence = require('./routers/agence')
+app.use('/agence',routerAgence)
 
 app.listen(port, console.log('Console running on '+port+' port'))
