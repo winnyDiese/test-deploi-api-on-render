@@ -5,7 +5,7 @@ const app = express()
 
 const port = 3000
 
-app.use(express.json())git add .
+app.use(express.json())
 
 
 const routerAgence = require('./routers/agence')
