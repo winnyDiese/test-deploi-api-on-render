@@ -18,6 +18,7 @@ const all_pays = async (req,res)=>{
 
 const add_pays = async (req,res)=>{
     const {nomPays, indicatif} = await req.body
+    
     const new_pays = new Pays({nomPays, indicatif})
 
     try {
