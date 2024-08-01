@@ -1,6 +1,6 @@
 
 const express = require('express')
-const { all_user, add_user } = require('../controllers/ville')
+const { all_user, add_user } = require('../controllers/user')
 const router = express.Router()
 
 
