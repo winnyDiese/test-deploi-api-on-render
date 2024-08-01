@@ -17,7 +17,7 @@ const all_agence = async (req,res)=>{
 }
 
 const add_agence = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = req.body
+    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = await req.body
     const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active})
     
     try {
