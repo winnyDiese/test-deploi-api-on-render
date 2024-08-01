@@ -1,5 +1,6 @@
 
 const express = require('express')
+const Agence = require('../models/agence')
 const router = express.Router()
 
 router.route('/agence').get(async (req,res)=>{

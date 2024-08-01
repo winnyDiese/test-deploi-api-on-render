@@ -20,4 +20,5 @@ const agenceSchema = new Schema({
 },{ timestamps: true })
 
 const Agence = mongoose.models.Agence || mongoose.model('Agence',agenceSchema)
-export default Agence
+// export default Agence
+module.exports = Agence
