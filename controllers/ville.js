@@ -34,9 +34,9 @@ const city_by_contry = async (req,res)=>{
     const id_pays = req.params.id
 
     try {
-        const cities = await Ville.find({id_pays})
+        const cities = await Ville.findOne({id_pays})
         if(!cities) return res.status(404).send('Ville non trouvée !')
-            
+
         res.status(201).json(cities)
     } catch (error) {
         console.log(error)
