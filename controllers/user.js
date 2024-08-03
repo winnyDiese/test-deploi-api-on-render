@@ -16,7 +16,6 @@ const all_user = async (req,res)=>{
     }
 }
 
-
 const add_user = async (req,res)=>{
     const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser } = await req.body
     const new_user = new User({nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser })
@@ -32,7 +31,7 @@ const add_user = async (req,res)=>{
 
 const user_login = async (req,res)=>{
     const {phoneUser, passwordUser} = await req.body
-    
+
     try {
         const user = await User.findOne({phoneUser,passwordUser})
         if(!user) res.status(401).send('Mot de passe ou numéro de télephone non valide...')
