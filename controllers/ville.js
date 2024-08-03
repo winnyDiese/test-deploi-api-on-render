@@ -29,4 +29,17 @@ const add_ville = async (req,res)=>{
     }
 }
 
-module.exports = {all_ville, add_ville}
+
+const city_by_contry = async (req,res)=>{
+    const {id_pays} = await req.body
+
+    try {
+        const cities = await Ville.find({id_pays})
+        res.status(201).json(cities)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+module.exports = {all_ville, add_ville, city_by_contry}
