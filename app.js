@@ -16,7 +16,7 @@ const router_user = require('./routers/user')
 // Using router
 app.use('/api',router_agence)
 app.use('/api',router_pays)
-app.use('/api',router_ville)
 app.use('/api',router_user)
+app.use('/api',router_ville)
 
 app.listen(port, console.log('Console running on '+port+' port'))
