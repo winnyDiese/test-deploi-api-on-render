@@ -18,11 +18,13 @@ const all_ville = async (req,res)=>{
 
 const add_ville = async (req,res)=>{
     const {nomVille, id_pays} = await req.body
-    const new_ville = new Ville({nomVille, id_pays})
+
+    if((!nomVille || nomVille.trim() === '') && (!id_pays || id_pays.trim() === '')) return res.status(402).send("Les données sont obligatoire !")
 
     try {
+        const new_ville = new Ville({nomVille, id_pays})
         const saved_ville = await new_ville.save()
-        res.status(201).json(saved_ville)
+        return res.status(201).json(saved_ville)
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
