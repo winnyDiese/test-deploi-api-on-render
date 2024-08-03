@@ -6,5 +6,6 @@ const router = express.Router()
 
 router.get('/ville', all_ville)
 router.post('/ville', add_ville)
+router.get('/ville/pays/', add_ville)
 
 module.exports = router   
