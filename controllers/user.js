@@ -74,5 +74,21 @@ const delete_user = async (req,res) => {
 
 }
 
+const update_user = async (req,res) => {
+    
+    try {
+        const {id} = req.params
+        const updates = req.body
 
-module.exports = {all_user, add_user, user_login, one_user,delete_user}
+        const updated_user = await User.findByIdAndUpdate(id, updates, {new:true})
+
+        if(!updated_user) return res.status(404).json({message:"Utilisateur non trouvé"})
+        
+        res.status(200).json({message:"Utilisateur mise à jour avec succées !", user: updated_user})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+module.exports = {all_user, add_user, user_login, one_user,delete_user,update_user}
