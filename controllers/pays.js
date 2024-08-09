@@ -30,4 +30,37 @@ const add_pays = async (req,res)=>{
     }
 }
 
+const one_contry = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const contry = await Pays.findById(id)
+
+        if (!contry) return res.status(404).json({ message: 'Pays non, trouvé !' });
+        const pays = contry
+        res.status(200).json(pays)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+const delete_contry = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const deleted_contry = await Pays.findByIdAndDelete(id)
+
+        if (!deleted_contry) return res.status(404).json({ message: 'Pays non, trouvé !' });
+        res.status(200).json({ message: 'Un pays a été supprimé avec sucées !', pays: deleted_contry });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
 module.exports = {all_pays, add_pays}
