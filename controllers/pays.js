@@ -34,7 +34,7 @@ const one_contry = async (req,res) => {
     const { id } = req.params;
     try {
         const contry = await Pays.findById(id)
-
+    
         if (!contry) return res.status(404).json({ message: 'Pays non, trouvé !' });
         const pays = contry
         res.status(200).json(pays)
@@ -63,4 +63,4 @@ const delete_contry = async (req,res) => {
 }
 
 
-module.exports = {all_pays, add_pays}
+module.exports = {all_pays, add_pays,one_contry,delete_contry}
