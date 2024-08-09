@@ -8,7 +8,10 @@ const userSchema = new mongoose.Schema({
 
     nomUser:String,
     fonctionAgent:String,
-    phoneUser:String,
+    phoneUser:{
+        type: String,
+        unique:true
+    },
     passwordUser:String,
     emailUser:String,
     adresseUSer:String,

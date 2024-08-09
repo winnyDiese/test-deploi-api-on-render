@@ -24,8 +24,14 @@ const add_user = async (req,res)=>{
         const saved_user = await new_user.save()
         res.status(201).json(saved_user)
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyValue)[0];
+            res.status(400).json({ message: `${field} existe déjà !` });
+          } else {
+            res.status(500).json({ message: 'Une erreur est survenue !', error: error.message });
+          }
+
     }
 }
 
