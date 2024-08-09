@@ -43,4 +43,19 @@ const user_login = async (req,res)=>{
     }
 }
 
-module.exports = {all_user, add_user, user_login}
+const one_user = async (req,res)=>{
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id)
+    
+        if (!user) return res.status(404).json({ message: 'Utilisateur non, trouvé !' });
+        res.status(200).json(user)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+module.exports = {all_user, add_user, user_login, one_user}
