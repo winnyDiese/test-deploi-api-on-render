@@ -49,22 +49,6 @@ const user_login = async (req,res)=>{
     }
 }
 
-const one_user = async (req,res)=>{
-    const { id } = req.params;
-
-    try {
-        const user = await User.findById(id)
-    
-        if (!user) return res.status(404).json({ message: 'Utilisateur non, trouvé !' });
-        res.status(200).json(user)
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
-    }
-}
-
-
 const delete_user = async (req,res) => {
     const { id } = req.params;
     try {
@@ -84,9 +68,17 @@ const update_user = async (req,res) => {
     
     try {
         const {id} = req.params
-        const updates = req.body
+        const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser } = req.body
 
-        const updated_user = await User.findByIdAndUpdate(id, updates, {new:true})
+        const phoneExist = await User.findOne({phoneUser})
+        if(phoneExist && phoneExist._id.toString() !== id)  return res.status(400).json({ message: 'Numero de telephone existe déjà.' });
+
+
+        const updated_user = await User.findByIdAndUpdate(
+            id, 
+            {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser }, 
+            {new:true}
+        )
 
         if(!updated_user) return res.status(404).json({message:"Utilisateur non trouvé"})
         
@@ -97,4 +89,37 @@ const update_user = async (req,res) => {
     }
 }
 
-module.exports = {all_user, add_user, user_login, one_user,delete_user,update_user}
+const one_user = async (req,res)=>{
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id)
+    
+        if (!user) return res.status(404).json({ message: 'Utilisateur non, trouvé !' });
+        res.status(200).json(user)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+
+const one_user_by_tel = async (req,res)=>{
+    const { tel } = req.params;
+    console.log(tel)
+
+    try {
+        const user = await User.findOne({tel:tel})
+    
+        if (!user) return res.status(404).json({ message: 'Utilisateur non, trouvé !' });
+        res.status(200).json(user)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+
+module.exports = {all_user, add_user, user_login, one_user,delete_user,update_user,one_user_by_tel}
