@@ -110,7 +110,7 @@ const one_user_by_tel = async (req,res)=>{
     console.log(tel)
 
     try {
-        const user = await User.findOne({tel:tel})
+        const user = await User.findOne({phoneUser:tel})
     
         if (!user) return res.status(404).json({ message: 'Utilisateur non, trouvé !' });
         res.status(200).json(user)
