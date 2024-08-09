@@ -46,7 +46,6 @@ const one_contry = async (req,res) => {
 
 }
 
-
 const delete_contry = async (req,res) => {
     const { id } = req.params;
     try {
@@ -62,5 +61,21 @@ const delete_contry = async (req,res) => {
 
 }
 
+const update_contry = async (req,res) => {
+    
+    try {
+        const {id} = req.params
+        const updates = req.body
 
-module.exports = {all_pays, add_pays,one_contry,delete_contry}
+        const updated_contry = await Pays.findByIdAndUpdate(id, updates, {new:true})
+        if(!updated_contry) return res.status(404).json({message:"Pays non trouvé !"})
+        
+        res.status(200).json({message:"Pays mise à jour avec succées !", pays: updated_contry})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+
+module.exports = {all_pays, add_pays,one_contry,delete_contry,update_contry}
