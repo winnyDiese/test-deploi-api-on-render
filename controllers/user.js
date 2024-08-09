@@ -58,4 +58,21 @@ const one_user = async (req,res)=>{
     }
 }
 
-module.exports = {all_user, add_user, user_login, one_user}
+
+const delete_user = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const deleted_user = await User.findByIdAndDelete(id)
+
+        if (!deleted_user) return res.status(404).json({ message: 'Utitlisateur non trouvé !' });
+        res.status(200).json({ message: 'Un utilisateur a été supprimé avec sucées !', user: deleted_user });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+module.exports = {all_user, add_user, user_login, one_user,delete_user}
