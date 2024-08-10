@@ -15,7 +15,6 @@ const all_pays = async (req,res)=>{
     }
 }
 
-
 const add_pays = async (req,res)=>{
     const {nomPays, indicatif} = await req.body
     
@@ -28,22 +27,6 @@ const add_pays = async (req,res)=>{
         console.log(error)
         res.status(500).json(error.message)
     }
-}
-
-const one_contry = async (req,res) => {
-    const { id } = req.params;
-    try {
-        const contry = await Pays.findById(id)
-    
-        if (!contry) return res.status(404).json({ message: 'Pays non, trouvé !' });
-        const pays = contry
-        res.status(200).json(pays)
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
-    }
-
 }
 
 const delete_contry = async (req,res) => {
@@ -75,6 +58,22 @@ const update_contry = async (req,res) => {
         console.log(error)
         res.status(500).json(error.message)
     }
+}
+
+const one_contry = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const contry = await Pays.findById(id)
+    
+        if (!contry) return res.status(404).json({ message: 'Pays non, trouvé !' });
+        const pays = contry
+        res.status(200).json(pays)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
 }
 
 

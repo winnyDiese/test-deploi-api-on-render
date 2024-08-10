@@ -47,5 +47,53 @@ const city_by_contry = async (req,res)=>{
 }
 
 
+const delete_city = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const deleted_city = await Ville.findByIdAndDelete(id)
 
-module.exports = {all_ville, add_ville, city_by_contry}
+        if (!deleted_city) return res.status(404).json({ message: 'Ville non, trouvé !' });
+        res.status(200).json({ message: 'Une ville a été supprimée avec sucées !', ville: deleted_city });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+const update_city = async (req,res) => {
+    
+    try {
+        const {id} = req.params
+        const updates = req.body
+
+        const updated_contry = await Ville.findByIdAndUpdate(id, updates, {new:true})
+        if(!updated_contry) return res.status(404).json({message:"Ville non trouvé !"})
+        
+        res.status(200).json({message:"Vile=le mise à jour avec succées !", pays: updated_contry})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+const one_city = async (req,res) => {
+    const { id } = req.params
+
+    try {
+        const city = await Ville.findById(id)
+        if (!city) return res.status(404).json({ message: 'Ville non, trouvé !' });
+        const ville = city
+        res.status(200).json(ville)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+
+module.exports = {all_ville, add_ville, city_by_contry,delete_city,update_city,one_city }
