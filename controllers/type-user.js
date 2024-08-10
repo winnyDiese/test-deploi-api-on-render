@@ -1,6 +1,5 @@
 
 const connect_mongodb = require('../lib/connect_db')
-// const { default: Typeuser } = require('../models/typeuser')
 const Typeuser = require('../models/typeuser')
 
 

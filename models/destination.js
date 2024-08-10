@@ -1,5 +1,5 @@
 
-import mongoose, {Schema}  from "mongoose"
+const mongoose = require('mongoose')
 
 const destinationSchema = new Schema({
     // villeA: String,
@@ -10,4 +10,4 @@ const destinationSchema = new Schema({
 },{ timestamps: true })
 
 const Destination = mongoose.models.Destination || mongoose.model('Destination',destinationSchema)
-export default Destination
+module.exports = Destination
