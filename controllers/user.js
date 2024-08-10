@@ -122,4 +122,21 @@ const one_user_by_tel = async (req,res)=>{
 }
 
 
-module.exports = {all_user, add_user, user_login, one_user,delete_user,update_user,one_user_by_tel}
+const one_user_by_type_user = async (req,res)=>{
+    const { type } = req.params;
+    console.log(tel)
+
+    try {
+        const user = await User.findOne({id_typeUser:type})
+    
+        if (!user) return res.status(404).json({ message: 'Utilisateur non, trouvé !' });
+        res.status(200).json(user)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
+
+module.exports = {all_user, add_user, user_login, one_user,delete_user,update_user,one_user_by_tel,one_user_by_type_user}

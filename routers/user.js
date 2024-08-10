@@ -1,6 +1,6 @@
 
 const express = require('express')
-const { all_user, add_user, one_user, user_login, delete_user, update_user, one_user_by_tel } = require('../controllers/user')
+const { all_user, add_user, one_user, user_login, delete_user, update_user, one_user_by_tel, one_user_by_type_user } = require('../controllers/user')
 const router = express.Router()
 
 
@@ -11,6 +11,7 @@ router.put('/user/:id', update_user)
 
 router.get('/user/:id', one_user)
 router.get('/user/tel/:tel', one_user_by_tel)
+router.get('/user/type/:type', one_user_by_type_user)
 
 // Login
 router.post('/user/login', user_login)
