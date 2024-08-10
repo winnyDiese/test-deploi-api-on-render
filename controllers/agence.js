@@ -66,7 +66,7 @@ const one_agence = async (req,res) => {
         const agence = await Agence.findById(id)
     
         if (!agence) return res.status(404).json({ message: 'Agence non, trouvé !' });
-        res.status(200).json(agnece)
+        res.status(200).json(agence)
 
     } catch (error) {
         console.log(error)

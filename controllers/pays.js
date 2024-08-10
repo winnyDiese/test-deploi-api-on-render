@@ -76,5 +76,4 @@ const one_contry = async (req,res) => {
 
 }
 
-
 module.exports = {all_pays, add_pays,one_contry,delete_contry,update_contry}
