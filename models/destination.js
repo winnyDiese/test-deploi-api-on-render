@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose')
 
-const destinationSchema = new Schema({
+const destinationSchema = new mongoose.Schema({
     // villeA: String,
     // villeB: String
 
