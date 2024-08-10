@@ -8,8 +8,8 @@ connect_mongodb()
 
 const all_using = async (req,res)=>{
     try {
-        const usings = await Utilisation.find()
-        res.status(200).json(usings)
+        const utilisations = await Utilisation.find()
+        res.status(200).json(utilisations)
     } catch (error) {
         console.log(error)
         res.status(500).send('Une erreur est survenus !')
@@ -17,11 +17,11 @@ const all_using = async (req,res)=>{
 }
 
 const add_using = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = await req.body
-    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active})
+    const {id_compte, id_colis, montantRetire} = await req.body
+    const new_using = new Utilisation({id_compte, id_colis, montantRetire})
     
     try {
-        const saved_using = await Utilisation.save()
+        const saved_using = await new_using.save()
         res.status(201).json(saved_using)
     } catch (error) {
         console.log(error)
