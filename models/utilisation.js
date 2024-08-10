@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose')
 
-const utilisationSchema = new Schema({
+const utilisationSchema = new mongoose.Schema({
     // colis: String,
     // compte: String
 
