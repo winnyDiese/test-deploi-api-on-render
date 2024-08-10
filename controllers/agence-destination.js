@@ -29,7 +29,7 @@ const add_agence_desti = async (req,res)=>{
     }
 }
 
-const delete_destination = async (req,res) => {
+const delete_agence_desti = async (req,res) => {
     const { id } = req.params;
     try {
         const deleted_agence_desti = await AgenceDestination.findByIdAndDelete(id)
