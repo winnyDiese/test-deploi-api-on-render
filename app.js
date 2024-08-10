@@ -15,6 +15,7 @@ const router_user = require('./routers/user')
 const router_type = require('./routers/type-user')
 const router_destination = require('./routers/destination')
 const router_agence_desti = require('./routers/agence-destination')
+const router_tarif = require('./routers/tarif')
 
 // Using router
 app.use('/api',router_agence)
@@ -24,5 +25,6 @@ app.use('/api',router_ville)
 app.use('/api',router_type)
 app.use('/api',router_destination)
 app.use('/api',router_agence_desti)
+app.use('/api',router_tarif)
 
 app.listen(port, console.log('Console running on '+port+' port'))
