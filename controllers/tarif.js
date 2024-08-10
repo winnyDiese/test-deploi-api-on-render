@@ -17,9 +17,9 @@ const all_tarif = async (req,res)=>{
 }
 
 const add_tarif = async (req,res)=>{
-    const {nomPays, indicatif} = await req.body
+    const {prix, dateTarif, id_agence} = await req.body
     
-    const new_tarif = new Tarif({nomPays, indicatif})
+    const new_tarif = new Tarif({prix, dateTarif, id_agence})
 
     try {
         const saved_tarif = await new_tarif.save()
@@ -30,13 +30,13 @@ const add_tarif = async (req,res)=>{
     }
 }
 
-const delete_contry = async (req,res) => {
+const delete_tarif = async (req,res) => {
     const { id } = req.params;
     try {
         const deleted_tarif = await Tarif.findByIdAndDelete(id)
 
         if (!deleted_tarif) return res.status(404).json({ message: 'tarif non, trouvé !' });
-        res.status(200).json({ message: 'Un tarif a été supprimé avec sucées !', tarif: deleted_contry });
+        res.status(200).json({ message: 'Un tarif a été supprimé avec sucées !', tarif: deleted_tarif });
 
     } catch (error) {
         console.log(error)
@@ -45,23 +45,23 @@ const delete_contry = async (req,res) => {
 
 }
 
-const update_contry = async (req,res) => {
+const update_tarif = async (req,res) => {
     
     try {
         const {id} = req.params
         const updates = req.body
 
-        const updated_contry = await Tarif.findByIdAndUpdate(id, updates, {new:true})
-        if(!updated_contry) return res.status(404).json({message:"tarif non trouvé !"})
+        const updated_tarif = await Tarif.findByIdAndUpdate(id, updates, {new:true})
+        if(!updated_tarif) return res.status(404).json({message:"Tarif non trouvé !"})
         
-        res.status(200).json({message:"tarif mise à jour avec succées !", tarif: updated_contry})
+        res.status(200).json({message:"Tarif mise à jour avec succées !", tarif: updated_tarif})
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
     }
 }
 
-const one_contry = async (req,res) => {
+const one_tarif = async (req,res) => {
     const { id } = req.params;
     try {
         const tarif = await Tarif.findById(id)
@@ -76,4 +76,4 @@ const one_contry = async (req,res) => {
 
 }
 
-module.exports = {all_tarif, add_tarif,one_contry,delete_contry,update_contry}
+module.exports = {all_tarif, add_tarif,one_tarif,delete_tarif,update_tarif}
