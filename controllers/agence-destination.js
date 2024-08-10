@@ -16,9 +16,9 @@ const all_agence_desti = async (req,res)=>{
 }
 
 const add_agence_desti = async (req,res)=>{
-    const {id_villeA,id_villeB} = await req.body
+    const {id_agence,id_destination,statusDest} = await req.body
     
-    const new_agence_desti = new AgenceDestination({id_villeA,id_villeB})
+    const new_agence_desti = new AgenceDestination({id_agence,id_destination,statusDest})
 
     try {
         const saved_agence_desti = await AgenceDestination.save()
