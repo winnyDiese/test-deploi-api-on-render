@@ -1,10 +1,11 @@
 
-import mongoose, {Schema}  from "mongoose"
+const mongoose = require('mongoose')
 
-const typeuserSchema = new Schema({
+const typeuserSchema = new mongoose.Schema({
    
     nomType:String
 },{ timestamps: true })
 
 const Typeuser = mongoose.models.Typeuser || mongoose.model('Typeuser',typeuserSchema)
-export default Typeuser
+
+module.exports = Typeuser

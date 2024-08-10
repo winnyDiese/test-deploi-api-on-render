@@ -1,6 +1,6 @@
 
 const express = require('express')
-const { all_type, add_type,delete_type,update_type,one_type } = require('../controllers/pays')
+const { all_type, add_type,delete_type,update_type,one_type } = require('../controllers/type-user')
 const router = express.Router()
 
 
