@@ -35,8 +35,8 @@ const delete_contry = async (req,res) => {
     try {
         const deleted_tarif = await Tarif.findByIdAndDelete(id)
 
-        if (!deleted_tarif) return res.status(404).json({ message: 'Pays non, trouvé !' });
-        res.status(200).json({ message: 'Un pays a été supprimé avec sucées !', pays: deleted_contry });
+        if (!deleted_tarif) return res.status(404).json({ message: 'tarif non, trouvé !' });
+        res.status(200).json({ message: 'Un tarif a été supprimé avec sucées !', tarif: deleted_contry });
 
     } catch (error) {
         console.log(error)
@@ -51,10 +51,10 @@ const update_contry = async (req,res) => {
         const {id} = req.params
         const updates = req.body
 
-        const updated_contry = await Pays.findByIdAndUpdate(id, updates, {new:true})
-        if(!updated_contry) return res.status(404).json({message:"Pays non trouvé !"})
+        const updated_contry = await Tarif.findByIdAndUpdate(id, updates, {new:true})
+        if(!updated_contry) return res.status(404).json({message:"tarif non trouvé !"})
         
-        res.status(200).json({message:"Pays mise à jour avec succées !", pays: updated_contry})
+        res.status(200).json({message:"tarif mise à jour avec succées !", tarif: updated_contry})
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
@@ -64,11 +64,10 @@ const update_contry = async (req,res) => {
 const one_contry = async (req,res) => {
     const { id } = req.params;
     try {
-        const contry = await Pays.findById(id)
+        const tarif = await Tarif.findById(id)
     
-        if (!contry) return res.status(404).json({ message: 'Pays non, trouvé !' });
-        const pays = contry
-        res.status(200).json(pays)
+        if (!tarif) return res.status(404).json({ message: 'tarif non, trouvé !' });
+        res.status(200).json(tarif)
 
     } catch (error) {
         console.log(error)
@@ -77,4 +76,4 @@ const one_contry = async (req,res) => {
 
 }
 
-module.exports = {all_pays, add_pays,one_contry,delete_contry,update_contry}
+module.exports = {all_tarif, add_tarif,one_contry,delete_contry,update_contry}
