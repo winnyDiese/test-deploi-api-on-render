@@ -16,12 +16,12 @@ const all_agence_desti = async (req,res)=>{
 }
 
 const add_agence_desti = async (req,res)=>{
-    const {id_agence,id_destination,statusDest} = await req.body
+    const {id_agence,id_destination,statutDest} = await req.body
     
-    const new_agence_desti = new AgenceDestination({id_agence,id_destination,statusDest})
+    const new_agence_desti = new AgenceDestination({id_agence,id_destination,statutDest})
 
     try {
-        const saved_agence_desti = await AgenceDestination.save()
+        const saved_agence_desti = await new_agence_desti.save()
         res.status(201).json(saved_agence_desti)
     } catch (error) {
         console.log(error)
@@ -77,4 +77,21 @@ const one_agence_desti = async (req,res) => {
 }
 
 
-module.exports = {all_agence_desti, add_agence_desti,delete_agence_desti,update_agence_desti,one_agence_desti}
+const one_agence_desti_by_status = async (req,res) => {
+    const { status } = req.params
+
+    try {
+        const agence_desti = await AgenceDestination.find({statutDest:status})
+    
+        if (!agence_desti) return res.status(404).json({ message: 'agence_desti non, trouvé !' });
+        res.status(200).json(agence_desti)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+module.exports = {all_agence_desti, add_agence_desti,delete_agence_desti,update_agence_desti,one_agence_desti,one_agence_desti_by_status}

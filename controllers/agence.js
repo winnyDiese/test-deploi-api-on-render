@@ -77,5 +77,4 @@ const one_agence = async (req,res) => {
 
 
 
-
 module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence}
