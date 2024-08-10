@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose')
-const compteSchema = new mongoose.CursorSchema({
+const compteSchema = new mongoose.Schema({
 
     dateCompte:String,
     typeCompte:String,
@@ -8,7 +8,7 @@ const compteSchema = new mongoose.CursorSchema({
     solde:String,
     id_agence:String,
     id_user:String
-    
+
 },{ timestamps: true })
 
 const Compte = mongoose.models.Compte || mongoose.model('Compte',compteSchema)
