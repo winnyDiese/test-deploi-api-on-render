@@ -17,8 +17,8 @@ const all_compte = async (req,res)=>{
 }
 
 const add_compte = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = await req.body
-    const new_compte = new Compte({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active})
+    const {dateCompte, typeCompte, montantCompte, solde, id_agence, id_user} = await req.body
+    const new_compte = new Compte({dateCompte, typeCompte, montantCompte, solde, id_agence, id_user})
     
     try {
         const saved_compte = await new_compte.save()
@@ -61,7 +61,8 @@ const update_compte = async (req,res) => {
 }
 
 const one_compte = async (req,res) => {
-    const { id } = req.params;
+    const { id } = req.params
+    
     try {
         const compte = await Compte.findById(id)
     
