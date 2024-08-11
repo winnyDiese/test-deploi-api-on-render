@@ -1,6 +1,7 @@
-import mongoose, {Schema}  from "mongoose"
 
-const userExtensionSchema = new Schema({
+const mongoose = require('mongoose')
+
+const userExtensionSchema = new mongoose.Schema({
     // user: String,
     // extension: String
     
@@ -10,4 +11,4 @@ const userExtensionSchema = new Schema({
 },{ timestamps: true })
 
 const UserExtension = mongoose.models.UserExtension || mongoose.model('UserExtension',userExtensionSchema)
-export default UserExtension
+module.exports = UserExtension
