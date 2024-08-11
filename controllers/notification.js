@@ -17,9 +17,9 @@ const all_notification = async (req,res)=>{
 }
 
 const add_notification = async (req,res)=>{
-    const {prix, dateNotification, id_agence} = await req.body
+    const {dateNotif, id_user, message} = await req.body
     
-    const new_notification = new Notification({prix, dateNotification, id_agence})
+    const new_notification = new Notification({dateNotif, id_user, message})
 
     try {
         const saved_notification = await new_notification.save()
