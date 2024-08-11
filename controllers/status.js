@@ -17,8 +17,8 @@ const all_status = async (req,res)=>{
 }
 
 const add_status = async (req,res) => {
-    const {prix, dateTarif, id_agence_dest} = await req.body
-    const new_status = new Status( {prix, dateTarif, id_agence_dest})
+    const {name} = await req.body
+    const new_status = new Status( {name})
     
     try {
         const saved_status = await new_status.save()
