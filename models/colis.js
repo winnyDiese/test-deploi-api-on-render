@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose')
-const colisSchema = new Schema({
+const colisSchema = new mongoose.Schema({
     // contenus: String,
     // poid: String,
     // valeurContenu: String,

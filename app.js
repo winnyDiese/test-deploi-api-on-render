@@ -19,6 +19,7 @@ const router_tarif = require('./routers/tarif')
 const router_compte = require('./routers/compte')
 const router_utilisation = require('./routers/utilisation')
 const router_extension = require('./routers/extension')
+const router_colis = require('./routers/colis')
 
 // Using router
 app.use('/api',router_agence)
@@ -32,6 +33,7 @@ app.use('/api',router_tarif)
 app.use('/api',router_compte)
 app.use('/api',router_utilisation)
 app.use('/api',router_extension)
+app.use('/api',router_colis)
 
 
 app.listen(port, console.log('Console running on '+port+' port'))

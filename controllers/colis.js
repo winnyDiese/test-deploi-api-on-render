@@ -1,5 +1,5 @@
 
-const connect_mongodb = require('../libcolis/connect_db')
+const connect_mongodb = require('../lib/connect_db')
 const Colis = require('../models/colis')
 
 
