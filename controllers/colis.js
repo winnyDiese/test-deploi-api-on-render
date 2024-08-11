@@ -16,9 +16,31 @@ const all_colis = async (req,res)=>{
 }
 
 const add_colis = async (req,res)=>{
-    const {nomType} = await req.body
+    const {
+        codeColis,
+        poids,
+        contenu,
+        valeur,
+        source,
+        id_userA,
+        id_userB,
+        id_extensionA,
+        id_extensionB,
+        id_tarif
+    } = await req.body
     
-    const new_colis = new Colis({nomType})
+    const new_colis = new Colis({
+        codeColis,
+        poids,
+        contenu,
+        valeur,
+        source,
+        id_userA,
+        id_userB,
+        id_extensionA,
+        id_extensionB,
+        id_tarif
+    })
 
     try {
         const saved_colis = await new_colis.save()
