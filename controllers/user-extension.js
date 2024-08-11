@@ -17,9 +17,9 @@ const all_use_exten = async (req,res)=>{
 }
 
 const add_use_exten = async (req,res)=>{
-    const {prix, dateTarif, id_agence} = await req.body
+    const {id_user, id_extension} = await req.body
     
-    const new_use_exten = new UserExtension({prix, dateTarif, id_agence})
+    const new_use_exten = new UserExtension({id_user, id_extension})
 
     try {
         const saved_use_exten = await new_use_exten.save()
