@@ -1,41 +1,41 @@
 
 
 const connect_mongodb = require('../lib/connect_db')
-const Agence = require('../models/agence')
+const Status = require('../models/status')
 
 
 connect_mongodb()
 
-const all_agence = async (req,res)=>{
+const all_status = async (req,res)=>{
     try {
-        const agences = await Agence.find()
-        res.status(200).json(agences)
+        const statuss = await Status.find()
+        res.status(200).json(statuss)
     } catch (error) {
         console.log(error)
         res.status(500).send('Une erreur est survenus !')
     }
 }
 
-const add_agence = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = await req.body
-    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active})
+const add_status = async (req,res) => {
+    const {prix, dateTarif, id_agence_dest} = await req.body
+    const new_status = new Status( {prix, dateTarif, id_agence_dest})
     
     try {
-        const saved_agence = await new_agence.save()
-        res.status(201).json(saved_agence)
+        const saved_status = await new_status.save()
+        res.status(201).json(saved_status)
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
     }
 }
 
-const delete_agence = async (req,res) => {
+const delete_status = async (req,res) => {
     const { id } = req.params;
     try {
-        const deleted_agence = await Agence.findByIdAndDelete(id)
+        const deleted_status = await Status.findByIdAndDelete(id)
 
-        if (!deleted_agence) return res.status(404).json({ message: 'Agence non, trouvé !' });
-        res.status(200).json({ message: 'Un Agence a été supprimé avec sucées !', agence: deleted_agence });
+        if (!deleted_status) return res.status(404).json({ message: 'Status non, trouvé !' });
+        res.status(200).json({ message: 'Un Status a été supprimé avec sucées !', status: deleted_status });
 
     } catch (error) {
         console.log(error)
@@ -44,29 +44,29 @@ const delete_agence = async (req,res) => {
 
 }
 
-const update_agence = async (req,res) => {
+const update_status = async (req,res) => {
     
     try {
         const {id} = req.params
         const updates = req.body
 
-        const updated_agence = await Agence.findByIdAndUpdate(id, updates, {new:true})
-        if(!updated_agence) return res.status(404).json({message:"Agence non trouvé !"})
+        const updated_status = await Status.findByIdAndUpdate(id, updates, {new:true})
+        if(!updated_status) return res.status(404).json({message:"Status non trouvé !"})
         
-        res.status(200).json({message:"Agence mise à jour avec succées !", agence: updated_agence})
+        res.status(200).json({message:"Status mise à jour avec succées !", status: updated_status})
     } catch (error) {
         console.log(error)
         res.status(500).json(error.message)
     }
 }
 
-const one_agence = async (req,res) => {
+const one_status = async (req,res) => {
     const { id } = req.params;
     try {
-        const agence = await Agence.findById(id)
+        const status = await Status.findById(id)
     
-        if (!agence) return res.status(404).json({ message: 'Agence non, trouvé !' });
-        res.status(200).json(agence)
+        if (!status) return res.status(404).json({ message: 'Status non, trouvé !' });
+        res.status(200).json(status)
 
     } catch (error) {
         console.log(error)
@@ -77,4 +77,4 @@ const one_agence = async (req,res) => {
 
 
 
-module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence}
+module.exports = {all_status, add_status, delete_status, update_status, one_status}
