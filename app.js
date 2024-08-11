@@ -22,6 +22,7 @@ const router_extension = require('./routers/extension')
 const router_colis = require('./routers/colis')
 const router_user_exten = require('./routers/user-extension')
 const router_status = require('./routers/status')
+const router_notif = require('./routers/notification')
 
 // Using router
 app.use('/api',router_agence)
@@ -38,6 +39,7 @@ app.use('/api',router_extension)
 app.use('/api',router_colis)
 app.use('/api',router_user_exten)
 app.use('/api',router_status)
+app.use('/api',router_notif)
 
 
 app.listen(port, console.log('Console running on '+port+' port'))
