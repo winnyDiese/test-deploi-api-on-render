@@ -76,7 +76,6 @@ const one_agence_desti = async (req,res) => {
 
 }
 
-
 const one_agence_desti_by_status = async (req,res) => {
     const { status } = req.params
 
@@ -93,5 +92,21 @@ const one_agence_desti_by_status = async (req,res) => {
 
 }
 
+const one_agence_desti_by_desti = async (req,res) => {
+    const { destination } = req.params
 
-module.exports = {all_agence_desti, add_agence_desti,delete_agence_desti,update_agence_desti,one_agence_desti,one_agence_desti_by_status}
+    try {
+        const agence_desti = await AgenceDestination.find({id_destination:destination})
+    
+        if (!agence_desti) return res.status(404).json({ message: 'agence_desti non, trouvé !' });
+        res.status(200).json(agence_desti)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+module.exports = {all_agence_desti, add_agence_desti,delete_agence_desti,update_agence_desti,one_agence_desti,one_agence_desti_by_status,one_agence_desti_by_desti}
