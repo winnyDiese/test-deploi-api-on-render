@@ -128,4 +128,4 @@ const one_extension_by_ville = async (req,res) => {
 }
 
 
-module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence}
+module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville}

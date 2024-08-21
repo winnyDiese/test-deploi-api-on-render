@@ -1,6 +1,6 @@
 
 const express = require('express')
-const {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence} = require('../controllers/extension')
+const {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville} = require('../controllers/extension')
 const router = express.Router()
 
 
@@ -11,5 +11,6 @@ router.put('/extension/:id', update_extension)
 
 router.get('/extension/:id', one_extension)
 router.get('/extension/agence/:id', one_extension_by_agence)
+router.get('/extension/ville/:id', one_extension_by_ville)
 
 module.exports = router
