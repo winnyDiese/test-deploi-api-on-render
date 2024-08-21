@@ -76,4 +76,34 @@ const one_use_exten = async (req,res) => {
 
 }
 
-module.exports = {all_use_exten, add_use_exten,one_use_exten,delete_use_exten,update_use_exten}
+const use_exten_byuser = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const use_exten = await UserExtension.find({id_user:id})
+    
+        if (!use_exten) return res.status(404).json({ message: 'use_exten non, trouvé !' });
+        res.status(200).json(use_exten)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+const use_exten_byextension = async (req,res) => {
+    const { id } = req.params;
+    try {
+        const use_exten = await UserExtension.find({id_extension:id})
+    
+        if (!use_exten) return res.status(404).json({ message: 'use_exten non, trouvé !' });
+        res.status(200).json(use_exten)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+module.exports = {all_use_exten, add_use_exten,one_use_exten,delete_use_exten,update_use_exten,use_exten_byuser,use_exten_byextension}
