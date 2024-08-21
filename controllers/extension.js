@@ -95,5 +95,37 @@ const one_extension = async (req,res) => {
 
 }
 
+const one_extension_by_agence = async (req,res) => {
+    const { id } = req.params
 
-module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension}
+    try {
+        const extension = await Extension.find({id_agence:id})
+    
+        if (!extension) return res.status(404).json({ message: 'extension non, trouvé !' });
+        res.status(200).json(extension)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+const one_extension_by_ville = async (req,res) => {
+    const { id } = req.params
+
+    try {
+        const extension = await Extension.find({id_ville:id})
+    
+        if (!extension) return res.status(404).json({ message: 'extension non, trouvé !' });
+        res.status(200).json(extension)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville}

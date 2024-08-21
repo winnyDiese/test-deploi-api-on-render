@@ -98,5 +98,54 @@ const one_colis = async (req,res) => {
 
 }
 
+const colis_bycode = async (req,res) => {
+    const { id } = req.params
 
-module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis}
+    try {
+        const colis = await Colis.find({codeColis:id})
+    
+        if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
+        res.status(200).json(colis)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+const colis_byuser_a = async (req,res) => {
+    const { id } = req.params
+
+    try {
+        const colis = await Colis.find({id_userA:id})
+    
+        if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
+        res.status(200).json(colis)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+const colis_byuser_b = async (req,res) => {
+    const { id } = req.params
+
+    try {
+        const colis = await Colis.find({id_userB:id})
+    
+        if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
+        res.status(200).json(colis)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+
+}
+
+
+module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b}

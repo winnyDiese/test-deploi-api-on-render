@@ -10,5 +10,7 @@ router.delete('/historique-colis/:id', delete_story_colis)
 router.put('/historique-colis/:id', update_story_colis)
 
 router.get('/historique-colis/:id', one_story_colis)
+// router.get('/historique-colis/colis/:id', story_colis_bycolis)
+// router.get('/historique-colis/status/:id', story_colis_bystatus)
 
 module.exports = router
