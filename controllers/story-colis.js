@@ -76,4 +76,20 @@ const one_story_colis = async (req,res) => {
 
 }
 
+// const story_colis_byusers = async (req,res) => {
+//     const { id } = req.params;
+//     try {
+//         const story_colis = await HistoriqueColis.find({id_colis:id})
+    
+//         if (!story_colis) return res.status(404).json({ message: 'story_colis non, trouvé !' });
+//         res.status(200).json(story_colis)
+
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).json(error.message)
+//     }
+
+// }
+
+
 module.exports = {all_story_colis, add_story_colis,one_story_colis,delete_story_colis,update_story_colis}
