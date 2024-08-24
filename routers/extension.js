@@ -9,6 +9,8 @@ router.post('/extension', add_extension)
 router.delete('/extension/:id', delete_extension)
 router.put('/extension/:id', update_extension)
 
+router.get('/extension/byAgence/active', one_extension_by_ville)
+router.get('/extension/byAgence/desactive', one_extension_by_ville)
 router.get('/extension/:id', one_extension)
 router.get('/extension/agence/:id', one_extension_by_agence)
 router.get('/extension/ville/:id', one_extension_by_ville)

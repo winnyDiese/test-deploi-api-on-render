@@ -17,7 +17,8 @@ const extensionSchema = new mongoose.Schema({
     localisation:String,
     id_agence:String,
     id_ville:String,
-    statutExtension:String
+    statutExtension:Boolean
+    
 },{ timestamps: true })
 
 const Extension = mongoose.models.Extension || mongoose.model('Extension',extensionSchema)
