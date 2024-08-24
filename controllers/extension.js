@@ -127,6 +127,21 @@ const one_extension_by_ville = async (req,res) => {
 
 }
 
+const get_active_extensions_by_agence = async (req, res) => {
+    const { id_agence } = req.params;
+
+    try {
+        const active_extensions = await Extension.find({
+            statutExtension: true,
+            id_agence: id_agence
+        });
+        res.status(200).json(active_extensions);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message);
+    }
+}
+
 const get_inactive_extensions_by_agence = async (req, res) => {
     const { id_agence } = req.params;
 
@@ -143,6 +158,5 @@ const get_inactive_extensions_by_agence = async (req, res) => {
 }
 
 
+module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville,get_active_extensions_by_agence,get_inactive_extensions_by_agence}
 
-
-module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville}
