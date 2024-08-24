@@ -2,7 +2,15 @@
 const express = require('express')
 const app = express()
 
-const port = 3000
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
+const port = 3001
 
 app.use(express.json())
 
