@@ -127,5 +127,22 @@ const one_extension_by_ville = async (req,res) => {
 
 }
 
+const get_inactive_extensions_by_agence = async (req, res) => {
+    const { id_agence } = req.params;
+
+    try {
+        const inactive_extensions = await Extension.find({
+            statutExtension: false,
+            id_agence: id_agence
+        });
+        res.status(200).json(inactive_extensions);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message);
+    }
+}
+
+
+
 
 module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville}
