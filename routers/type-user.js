@@ -10,5 +10,6 @@ router.delete('/type-user/:id', delete_type)
 router.put('/type-user/:id', update_type)
 
 router.get('/type-user/:id', one_type)
+router.get('/type-user/type/:typeUser', one_type)
 
 module.exports = router
