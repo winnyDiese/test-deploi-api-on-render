@@ -17,8 +17,8 @@ const all_user = async (req,res)=>{
 }
 
 const add_user = async (req,res)=>{
-    const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser } = await req.body
-    const new_user = new User({nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser })
+    const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser } = await req.body
+    const new_user = new User({nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser })
 
     try {
         const saved_user = await new_user.save()
