@@ -1,6 +1,7 @@
 
 
 const connect_mongodb = require('../lib/connect_db')
+const mongoose = require('mongoose')
 const User = require('../models/user')
 const UserExtension = require('../models/userExtension')
 
@@ -17,31 +18,74 @@ const all_user = async (req,res)=>{
     }
 }
 
-const add_user = async (req,res)=>{
-    const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser, id_extension } = await req.body
-    const new_user = new User({nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser })
+
+const add_user = async (req, res) => {
+    const {
+        nomUser,
+        fonctionAgent,
+        phoneUser,
+        passwordUser,
+        emailUser,
+        adresseUser,
+        sexe,
+        id_typeUser,
+        id_ville,
+        statutUser,
+        id_extension
+    } = req.body;
 
     try {
-        const saved_user = await new_user.save()
+        // Vérifier si un utilisateur avec le même phoneUser existe déjà
+        const existingUser = await User.findOne({ phoneUser });
 
-        const new_user_extension = new UserExtension({id_user:saved_user._id, id_extension})
-        const saved_user_extension = await new_user_extension.save()
-
-        console.log('Un user ajouté !')
-        res.status(201).json(saved_user)
-
-    } catch (error) {
-
-        if (error.code === 11000) {
-            const field = Object.keys(error.keyValue)[0];
-            res.status(400).json({ message: `${field} existe déjà !` });
-
-        } else {
-            res.status(500).json({ message: 'Une erreur est survenue !', error: error.message });
+        if (existingUser) {
+            // Si l'utilisateur existe déjà, ne pas créer de nouvel utilisateur ni UserExtension
+            return res.status(400).json({ message: 'Un utilisateur avec ce numéro de téléphone existe déjà !' });
         }
 
+        // Création d'un nouvel utilisateur
+        const new_user = new User({
+            nomUser,
+            fonctionAgent,
+            phoneUser,
+            passwordUser,
+            emailUser,
+            adresseUser,
+            sexe,
+            id_typeUser,
+            id_ville,
+            statutUser
+        });
+
+        // Enregistrement de l'utilisateur dans la base de données
+        const saved_user = await new_user.save();
+
+        // Création de l'objet UserExtension avec l'id de l'utilisateur et l'id d'extension
+        const new_user_extension = new UserExtension({
+            id_user: saved_user._id,
+            id_extension
+        });
+
+        // Enregistrement de l'objet UserExtension dans la base de données
+        await new_user_extension.save();
+
+        // Réponse avec l'utilisateur enregistré et l'objet UserExtension
+        res.status(201).json({ saved_user});
+
+    } catch (error) {
+        if (error.code === 11000) {
+            // Gestion des erreurs de doublon
+            const field = Object.keys(error.keyValue)[0];
+            res.status(400).json({ message: `${field} existe déjà !` });
+        } else {
+            // Gestion des autres erreurs
+            res.status(500).json({ message: 'Une erreur est survenue !', error: error.message });
+        }
     }
 }
+
+
+
 
 const user_login = async (req,res)=>{
     const {phoneUser, passwordUser} = await req.body

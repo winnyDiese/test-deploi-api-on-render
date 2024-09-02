@@ -24,6 +24,9 @@ const add_use_exten = async (req,res)=>{
     
     const new_use_exten = new UserExtension({id_user, id_extension})
 
+   
+
+
     try {
         const saved_use_exten = await new_use_exten.save()
         res.status(201).json(saved_use_exten)
