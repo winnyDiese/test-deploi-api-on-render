@@ -2,6 +2,7 @@
 
 const connect_mongodb = require('../lib/connect_db')
 const User = require('../models/user')
+const UserExtension = require('../models/userExtension')
 
 
 connect_mongodb()
@@ -17,20 +18,27 @@ const all_user = async (req,res)=>{
 }
 
 const add_user = async (req,res)=>{
-    const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser } = await req.body
+    const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser, id_extension } = await req.body
     const new_user = new User({nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser })
 
     try {
         const saved_user = await new_user.save()
+
+        const new_user_extension = new UserExtension({id_user:saved_user._id, id_extension})
+        const saved_user_extension = await new_user_extension.save()
+
+        console.log('Un user ajouté !')
         res.status(201).json(saved_user)
+
     } catch (error) {
 
         if (error.code === 11000) {
             const field = Object.keys(error.keyValue)[0];
             res.status(400).json({ message: `${field} existe déjà !` });
-          } else {
+
+        } else {
             res.status(500).json({ message: 'Une erreur est survenue !', error: error.message });
-          }
+        }
 
     }
 }
