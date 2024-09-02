@@ -18,7 +18,6 @@ const all_user = async (req,res)=>{
     }
 }
 
-
 const add_user = async (req, res) => {
     const {
         nomUser,
@@ -86,9 +85,6 @@ const add_user = async (req, res) => {
         }
     }
 }
-
-
-
 
 const user_login = async (req,res)=>{
     const {phoneUser, passwordUser} = await req.body

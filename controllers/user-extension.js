@@ -10,7 +10,7 @@ const all_use_exten = async (req,res)=>{
     try {
         const use_exten = await UserExtension.find()
         .populate('id_user') // Récupère les détails de l'utilisateur
-        .populate('id_extension') // Récupère les détails de l'extension
+        // .populate('id_extension') // Récupère les détails de l'extension
 
         res.status(200).json(use_exten)
     } catch (error) {
