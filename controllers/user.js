@@ -70,7 +70,10 @@ const add_user = async (req, res) => {
         await new_user_extension.save();
 
         // Réponse avec l'utilisateur enregistré et l'objet UserExtension
-        res.status(201).json({ saved_user});
+        res.status(201).json({
+            user: saved_user,
+            user_extension: new_user_extension
+        });
 
     } catch (error) {
         if (error.code === 11000) {
