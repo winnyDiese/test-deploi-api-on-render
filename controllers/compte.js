@@ -73,6 +73,23 @@ const one_compte = async (req,res) => {
 
 }
 
+const get_comptes_by_agence = async (req, res) => {
+    const { id_agence } = req.params; // Récupère l'ID de l'agence depuis les paramètres de la requête
+
+    try {
+        // Recherche tous les comptes associés à l'agence par son ID
+        const comptes = await Compte.find({ id_agence });
+
+        if (comptes.length === 0) {
+            return res.status(404).json({ message: 'No accounts found for this agency' }); // Renvoie une erreur si aucun compte n'est trouvé
+        }
+
+        res.status(200).json(comptes); // Renvoie la liste des comptes trouvés
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message }); // Renvoie une erreur en cas de problème avec la requête
+    }
+};
 
 
-module.exports = {all_compte, add_compte, delete_compte, update_compte, one_compte}
+module.exports = {all_compte, add_compte, delete_compte, update_compte, one_compte, get_comptes_by_agence}
