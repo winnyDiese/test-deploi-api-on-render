@@ -1,6 +1,7 @@
 
 
 const Tarif = require('../models/tarif')
+const Destination = require('../models/destination'); // Assurez-vous de mettre le bon chemin vers votre modèle Destination
 
 
 const all_tarif = async (req,res)=>{
@@ -13,19 +14,34 @@ const all_tarif = async (req,res)=>{
     }
 }
 
-const add_tarif = async (req,res)=>{
-    const {prix, dateTarif, id_agence} = await req.body
-    
-    const new_tarif = new Tarif({prix, dateTarif, id_agence})
 
+const add_tarif = async (req, res) => {
+    const { prix, dateTarif, id_agence_dest, id_villeA, id_villeB } = await req.body;
+    
     try {
-        const saved_tarif = await new_tarif.save()
-        res.status(201).json(saved_tarif)
+        // Étape 1: Créer la destination
+        const new_destination = new Destination({ id_villeA, id_villeB });
+        const saved_destination = await new_destination.save();
+
+        // Étape 2: Utiliser l'ID de la destination sauvegardée pour créer un tarif
+        const new_tarif = new Tarif({
+            prix,
+            dateTarif,
+            id_agence_dest, // ID de l'agence
+            id_destination: saved_destination._id // Associe l'ID de la destination au tarif
+        });
+
+        const saved_tarif = await new_tarif.save();
+
+        // Étape 3: Répondre avec le tarif et la destination sauvegardés
+        res.status(201).json({ tarif: saved_tarif, destination: saved_destination });
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+        console.error(error);
+        res.status(500).json({ message: error.message });
     }
 }
+
+
 
 const delete_tarif = async (req,res) => {
     const { id } = req.params;
