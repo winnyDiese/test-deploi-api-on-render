@@ -1,10 +1,8 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const Utilisation = require('../models/utilisation')
 
 
-connect_mongodb()
 
 const all_using = async (req,res)=>{
     try {

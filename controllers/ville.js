@@ -1,9 +1,7 @@
 
-const connect_mongodb = require('../lib/connect_db')
 const Ville = require('../models/ville')
 
 
-connect_mongodb()
 
 const all_ville = async (req,res)=>{
     try {

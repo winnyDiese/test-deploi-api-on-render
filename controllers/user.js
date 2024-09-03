@@ -1,12 +1,9 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const mongoose = require('mongoose')
 const User = require('../models/user')
 const UserExtension = require('../models/userExtension')
 
-
-connect_mongodb()
 
 const all_user = async (req,res)=>{
     try {
