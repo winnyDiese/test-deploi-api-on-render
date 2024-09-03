@@ -77,14 +77,14 @@ const get_comptes_by_agence = async (req, res) => {
     const { id_agence } = req.params; // Récupère l'ID de l'agence depuis les paramètres de la requête
 
     try {
-        // Recherche tous les comptes associés à l'agence par son ID
-        const comptes = await Compte.find({ id_agence });
+        // Recherche les comptes associés à l'agence et inclut les détails de l'agence
+        const comptes = await Compte.find({ id_agence }).populate('id_agence');
 
         if (comptes.length === 0) {
             return res.status(404).json({ message: 'No accounts found for this agency' }); // Renvoie une erreur si aucun compte n'est trouvé
         }
 
-        res.status(200).json(comptes); // Renvoie la liste des comptes trouvés
+        res.status(200).json(comptes); // Renvoie la liste des comptes avec les détails de l'agence
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message }); // Renvoie une erreur en cas de problème avec la requête
