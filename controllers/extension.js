@@ -1,10 +1,8 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const Extension = require('../models/extension')
 
 
-connect_mongodb()
 
 const all_extension = async (req,res)=>{
     try {

@@ -1,9 +1,7 @@
 
-const connect_mongodb = require('../lib/connect_db')
 const Destination = require('../models/destination')
 
 
-connect_mongodb()
 
 const all_destination = async (req,res)=>{
     try {

@@ -1,10 +1,8 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const Notification = require('../models/notification')
 
 
-connect_mongodb()
 
 const all_notification = async (req,res)=>{
     try {
