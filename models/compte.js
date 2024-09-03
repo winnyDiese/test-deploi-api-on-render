@@ -6,7 +6,10 @@ const compteSchema = new mongoose.Schema({
     typeCompte:String,
     montantCompte:String,
     solde:String,
-    id_agence:String,
+    id_agence: {
+        type: mongoose.Schema.Types.ObjectId, // Définit id_agence comme un ObjectId
+        ref: 'Agence' // Référence à la collection Agence
+    },
     id_user:String
 
 },{ timestamps: true })
