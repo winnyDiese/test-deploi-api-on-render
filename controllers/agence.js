@@ -2,6 +2,9 @@
 
 const Agence = require('../models/agence')
 
+// const Agence = require('./models/Agence'); // Assurez-vous que le chemin est correct
+// const Compte = require('./models/Compte'); // Assurez-vous que le chemin est correct
+
 
 
 const all_agence = async (req,res)=>{
@@ -93,7 +96,45 @@ const get_inactive_agences = async (req, res) => {
     }
 };
 
+const get_agences_with_comptes = async (req, res) => {
+    try {
+        const agences_with_comptes = await Agence.aggregate([
+            {
+                $lookup: {
+                    from: 'comptes', // Nom de la collection Compte
+                    localField: '_id', // Champ de référence dans la collection Agence
+                    foreignField: 'id_agence', // Champ de référence dans la collection Compte
+                    as: 'comptes' // Nom du tableau résultant qui contient les comptes associés
+                }
+            },
+            {
+                $unwind: '$comptes' // Décompose le tableau de comptes en plusieurs documents
+            },
+            {
+                $project: {
+                    nomAgence: 1,
+                    phoneAgence: 1,
+                    adresseAgence: 1,
+                    emailAgence: 1,
+                    logo: 1,
+                    active: 1,
+                    montantCompte: '$comptes.montantCompte' // Inclut le montantCompte de chaque compte associé
+                }
+            }
+        ]);
+
+        if (!agences_with_comptes.length) {
+            return res.status(404).json({ message: 'No agencies found' });
+        }
+
+        res.status(200).json(agences_with_comptes);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 
-module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences}
+
+module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes}
