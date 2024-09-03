@@ -1,10 +1,7 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const Compte = require('../models/compte')
 
-
-connect_mongodb()
 
 const all_compte = async (req,res)=>{
     try {

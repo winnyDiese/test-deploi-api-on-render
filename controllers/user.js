@@ -56,6 +56,8 @@ const add_user = async (req, res) => {
             statutUser
         });
 
+        console.log('data user : '+new_user)
+
         // Enregistrement de l'utilisateur dans la base de données
         const saved_user = await new_user.save();
 
@@ -64,6 +66,8 @@ const add_user = async (req, res) => {
             id_user: saved_user._id,
             id_extension
         });
+
+        console.log('data user-extension : '+new_user_extension)
 
         // Enregistrement de l'objet UserExtension dans la base de données
         await new_user_extension.save();

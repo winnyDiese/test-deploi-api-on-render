@@ -1,9 +1,7 @@
 
-const connect_mongodb = require('../lib/connect_db')
 const Colis = require('../models/colis')
 
 
-connect_mongodb()
 
 const all_colis = async (req,res)=>{
     try {
