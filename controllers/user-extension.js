@@ -97,7 +97,7 @@ const use_exten_byuser = async (req,res) => {
 const use_exten_byextension = async (req,res) => {
     const { id } = req.params;
     try {
-        const use_exten = await UserExtension.find({id_extension:id})
+        const use_exten = await UserExtension.find({id_extension:id}).populate('id_user')
     
         if (!use_exten) return res.status(404).json({ message: 'use_exten non, trouvé !' });
         res.status(200).json(use_exten)
