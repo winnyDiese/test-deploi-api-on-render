@@ -1,10 +1,8 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const Status = require('../models/status')
 
 
-connect_mongodb()
 
 const all_status = async (req,res)=>{
     try {
