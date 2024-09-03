@@ -1,9 +1,7 @@
 
-const connect_mongodb = require('../lib/connect_db')
 const Typeuser = require('../models/typeuser')
 
 
-connect_mongodb()
 
 const all_type = async (req,res)=>{
     try {

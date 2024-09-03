@@ -1,10 +1,7 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const UserExtension = require('../models/userExtension')
 
-
-connect_mongodb()
 
 const all_use_exten = async (req,res)=>{
     try {
