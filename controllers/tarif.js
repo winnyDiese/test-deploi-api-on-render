@@ -1,10 +1,7 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const Tarif = require('../models/tarif')
 
-
-connect_mongodb()
 
 const all_tarif = async (req,res)=>{
     try {

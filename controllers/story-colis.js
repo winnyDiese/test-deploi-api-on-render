@@ -1,10 +1,7 @@
 
 
-const connect_mongodb = require('../lib/connect_db')
 const HistoriqueColis = require('../models/historiqueColis')
 
-
-connect_mongodb()
 
 const all_story_colis = async (req,res)=>{
     try {
