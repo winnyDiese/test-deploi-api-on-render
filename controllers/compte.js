@@ -133,6 +133,4 @@ const update_and_add_montant_compte_by_agence = async (req, res) => {
 };
 
 
-
-
 module.exports = {all_compte, add_compte, delete_compte, update_compte, one_compte, get_comptes_by_agence, update_and_add_montant_compte_by_agence}

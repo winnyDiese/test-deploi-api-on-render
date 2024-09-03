@@ -25,7 +25,7 @@ const add_colis = async (req,res)=>{
         id_extensionA,
         id_extensionB,
         id_tarif
-    } = await req.body
+    } = await req.body 
     
     const new_colis = new Colis({
         codeColis,
