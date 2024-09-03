@@ -10,7 +10,7 @@ router.delete('/compte/:id', delete_compte)
 router.put('/compte/:id', update_compte)
 
 router.put('/compte/additional/:id_agence', update_and_add_montant_compte_by_agence)
-router.get('/compte/:id', one_compte)
 router.get('/compte/agence/:id_agence', get_comptes_by_agence)
+router.get('/compte/:id', one_compte)
 
 module.exports = router
