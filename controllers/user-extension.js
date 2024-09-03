@@ -109,4 +109,23 @@ const use_exten_byextension = async (req,res) => {
 
 }
 
-module.exports = {all_use_exten, add_use_exten,one_use_exten,delete_use_exten,update_use_exten,use_exten_byuser,use_exten_byextension}
+const get_users_by_extension = async (req, res) => {
+    const { id_extension } = req.params; // Récupère l'ID de l'extension depuis les paramètres de la requête
+
+    try {
+        // Recherche tous les utilisateurs associés à l'extension par son ID
+        const users = await UserExtension.find({ id_extension });
+
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'No users found for this extension' }); // Renvoie une erreur si aucun utilisateur n'est trouvé
+        }
+
+        res.status(200).json(users); // Renvoie la liste des utilisateurs trouvés
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message }); // Renvoie une erreur en cas de problème avec la requête
+    }
+};
+
+
+module.exports = {all_use_exten, add_use_exten,one_use_exten,delete_use_exten,update_use_exten,use_exten_byuser,use_exten_byextension,get_users_by_extension}
