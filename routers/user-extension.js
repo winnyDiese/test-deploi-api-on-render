@@ -1,6 +1,6 @@
 
 const express = require('express')
-const {all_use_exten, add_use_exten,one_use_exten,delete_use_exten,update_use_exten,use_exten_byuser,use_exten_byextension} = require('../controllers/user-extension')
+const {all_use_exten, add_use_exten,one_use_exten,delete_use_exten,update_use_exten,use_exten_byuser,use_exten_byextension,get_users_by_extension} = require('../controllers/user-extension')
 const router = express.Router()
 
 
