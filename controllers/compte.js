@@ -91,5 +91,34 @@ const get_comptes_by_agence = async (req, res) => {
     }
 };
 
+const update_and_add_montant_compte_by_agence = async (req, res) => {
+    const { id_agence } = req.params; // ID de l'agence pour laquelle vous souhaitez mettre à jour le compte
+    const { montantCompte } = req.body; // Nouveau montant à ajouter
 
-module.exports = {all_compte, add_compte, delete_compte, update_compte, one_compte, get_comptes_by_agence}
+    try {
+        // Recherchez un compte associé à l'agence spécifique
+        const compte = await Compte.findOne({ id_agence });
+
+        // Vérifiez si un compte pour cette agence existe
+        if (!compte) {
+            return res.status(404).json({ message: "Aucun compte trouvé pour cette agence" });
+        }
+
+        // Additionnez le montant actuel avec le nouveau montant
+        const nouveauMontant = parseFloat(compte.montantCompte) + parseFloat(montantCompte);
+
+        // Mettez à jour le montant du compte trouvé
+        compte.montantCompte = nouveauMontant.toString(); // Convertir en chaîne si nécessaire
+        const updatedCompte = await compte.save();
+
+        // Répondez avec le compte mis à jour
+        res.status(200).json(updatedCompte);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+module.exports = {all_compte, add_compte, delete_compte, update_compte, one_compte, get_comptes_by_agence, update_and_add_montant_compte_by_agence}

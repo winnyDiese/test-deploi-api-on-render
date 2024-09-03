@@ -136,5 +136,4 @@ const get_agences_with_comptes = async (req, res) => {
 
 
 
-
 module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes}
