@@ -48,6 +48,25 @@ const add_extension = async (req,res)=>{
     }
 }
 
+const get_extension_by_id = async (req, res) => {
+    const { id } = req.params; // Récupère l'ID de l'extension depuis les paramètres de la requête
+
+    try {
+        // Recherche l'extension par son ID
+        const extension = await Extension.findById(id);
+
+        if (!extension) {
+            return res.status(404).json({ message: 'Extension not found' }); // Renvoie une erreur si l'extension n'est pas trouvée
+        }
+
+        res.status(200).json(extension); // Renvoie l'extension trouvée
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message }); // Renvoie une erreur en cas de problème avec la requête
+    }
+};
+
+
 const delete_extension = async (req,res) => {
     const { id } = req.params;
     try {
@@ -158,5 +177,5 @@ const get_inactive_extensions_by_agence = async (req, res) => {
 }
 
 
-module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville,get_active_extensions_by_agence,get_inactive_extensions_by_agence}
+module.exports = {all_extension, add_extension,delete_extension,update_extension,one_extension,one_extension_by_agence,one_extension_by_ville,get_active_extensions_by_agence,get_inactive_extensions_by_agence,get_extension_by_id}
 
