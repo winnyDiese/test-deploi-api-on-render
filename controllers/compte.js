@@ -92,32 +92,46 @@ const get_comptes_by_agence = async (req, res) => {
 };
 
 const update_and_add_montant_compte_by_agence = async (req, res) => {
-    const { id_agence } = req.params; // ID de l'agence pour laquelle vous souhaitez mettre à jour le compte
-    const { montantCompte } = req.body; // Nouveau montant à ajouter
+    const { id_agence } = req.params; // ID de l'agence pour laquelle vous souhaitez mettre à jour ou créer le compte
+    const { montantCompte, dateCompte, typeCompte, solde, id_user } = req.body; // Nouveau montant à ajouter et autres champs nécessaires
 
     try {
         // Recherchez un compte associé à l'agence spécifique
-        const compte = await Compte.findOne({ id_agence });
+        let compte = await Compte.findOne({ id_agence });
 
-        // Vérifiez si un compte pour cette agence existe
-        if (!compte) {
-            return res.status(404).json({ message: "Aucun compte trouvé pour cette agence" });
+        if (compte) {
+            // Si un compte existe, additionnez le montant actuel avec le nouveau montant
+            const nouveauMontant = parseFloat(compte.montantCompte) + parseFloat(montantCompte);
+
+            // Mettez à jour le montant du compte trouvé
+            compte.montantCompte = nouveauMontant.toString(); // Convertir en chaîne si nécessaire
+            compte.dateCompte = dateCompte; // Mettre à jour les autres champs si nécessaire
+            compte.typeCompte = typeCompte;
+            compte.solde = solde;
+            compte.id_user = id_user;
+
+            const updatedCompte = await compte.save();
+            return res.status(200).json(updatedCompte);
+        } else {
+            // Si aucun compte n'existe pour cette agence, créez un nouveau compte
+            const new_compte = new Compte({
+                dateCompte,
+                typeCompte,
+                montantCompte, // Le montant initial est celui reçu
+                solde,
+                id_agence,
+                id_user
+            });
+
+            const saved_compte = await new_compte.save();
+            return res.status(201).json(saved_compte);
         }
-
-        // Additionnez le montant actuel avec le nouveau montant
-        const nouveauMontant = parseFloat(compte.montantCompte) + parseFloat(montantCompte);
-
-        // Mettez à jour le montant du compte trouvé
-        compte.montantCompte = nouveauMontant.toString(); // Convertir en chaîne si nécessaire
-        const updatedCompte = await compte.save();
-
-        // Répondez avec le compte mis à jour
-        res.status(200).json(updatedCompte);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 
