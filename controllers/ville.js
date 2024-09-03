@@ -13,7 +13,6 @@ const all_ville = async (req,res)=>{
     }
 }
 
-
 const add_ville = async (req,res)=>{
     const {nomVille, id_pays} = await req.body
 
@@ -29,7 +28,6 @@ const add_ville = async (req,res)=>{
     }
 }
 
-
 const city_by_contry = async (req,res)=>{
     const id_pays = req.params.id
 
@@ -43,7 +41,6 @@ const city_by_contry = async (req,res)=>{
         res.status(500).json(error.message)
     }
 }
-
 
 const delete_city = async (req,res) => {
     const { id } = req.params;
