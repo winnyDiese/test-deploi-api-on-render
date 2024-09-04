@@ -44,7 +44,7 @@ const add_tarif = async (req, res) => {
         const new_tarif = new Tarif({
             prix,
             dateTarif,
-            id_agence_dest: saved_agence_destination._id, // Use the saved agence_destination ID
+            id_agence_dest, // Use the saved agence_destination ID
             id_destination: saved_destination._id // Associate the destination ID with the tariff
         });
 
