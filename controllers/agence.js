@@ -134,6 +134,22 @@ const get_agences_with_comptes = async (req, res) => {
     }
 };
 
+const get_agence_by_destination = async (req, res) => {
+    const { id_destination } = req.params; // Get the id_destination from the request parameters
+
+    try {
+        // Find all AgenceDestination entries with the given id_destination and populate the id_agence field
+        const agence_destinations = await AgenceDestination.find({ id_destination })
+            .populate('id_agence') // Populate the id_agence field with the related Agence documents
+            .exec();
+
+        // Return the found entries
+        res.status(200).json(agence_destinations);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message);
+    }
+};
 
 
-module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes}
+module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination}
