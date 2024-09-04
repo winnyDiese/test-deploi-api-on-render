@@ -1,6 +1,6 @@
 
 const Colis = require('../models/colis')
-const User = require('./models/User'); // Import the User model
+const User = require('../models/User'); // Import the User model
 
 
 
@@ -152,13 +152,17 @@ const colis_byuser_b = async (req,res) => {
 
 }
 
-
-// const Colis = require('./models/Colis'); // Assuming the Colis model is defined elsewhere
-
 const update_colis_my_data = async (req, res) => {
     try {
         const { id } = req.params; // Get the colis ID from the request parameters
-        const { nomUser, phoneUser, adresseUser  } = req.body; // Extract user data from the request body
+
+        // Check if the Colis exists
+        const colis = await Colis.findById(id);
+        if (!colis) {
+            return res.status(404).json({ message: "Colis non trouvé !" });
+        }
+
+        const { nomUser, phoneUser, adresseUser } = req.body; // Extract user data from the request body
 
         // Create a new user with the provided information
         const newUser = new User({
@@ -170,17 +174,13 @@ const update_colis_my_data = async (req, res) => {
         // Save the new user to the database
         const savedUser = await newUser.save();
 
-        // Add the new user's ID to the update object
+        // Prepare the update object with the new user's ID
         const updates = {
             id_userA: savedUser._id
         };
 
-        // Find the colis by ID and update it with the new information
+        // Update the existing Colis with the new user ID
         const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
-
-        if (!updated_colis) {
-            return res.status(404).json({ message: "Colis non trouvé !" });
-        }
 
         res.status(200).json({ message: "Colis mis à jour avec succès !", colis: updated_colis });
     } catch (error) {
@@ -188,8 +188,6 @@ const update_colis_my_data = async (req, res) => {
         res.status(500).json(error.message);
     }
 };
-
-module.exports = update_colis;
 
 
 
