@@ -2,6 +2,7 @@
 
 const Agence = require('../models/agence')
 const AgenceDestination = require('../models/agence-destination')
+const Colis = require('../models/colis')
 
 // const Agence = require('./models/Agence'); // Assurez-vous que le chemin est correct
 // const Compte = require('./models/Compte'); // Assurez-vous que le chemin est correct
@@ -136,22 +137,32 @@ const get_agences_with_comptes = async (req, res) => {
 };
 
 const get_agence_by_destination = async (req, res) => {
-    const { id_destination } = req.params; // Get the id_destination from the request parameters
+    const { id_colis } = req.params; // Get the id_colis from the request parameters
 
     try {
-        // Find all AgenceDestination entries with the given id_destination and populate the id_agence field
+        // Step 1: Find the Colis by its ID and retrieve the id_destination
+        const colis = await Colis.findById(id_colis);
+
+        if (!colis) {
+            return res.status(404).json({ message: "Colis non trouvé !" });
+        }
+
+        const id_destination = colis.id_destination;
+
+        // Step 2: Find all AgenceDestination entries with the retrieved id_destination
         const agence_destinations = await AgenceDestination.find({ id_destination })
             .populate('id_agence') // Populate the id_agence field with the related Agence documents
-            .populate('id_destination') // Populate the id_agence field with the related Agence documents
+            .populate('id_destination') // Populate the id_destination field with the related Destination documents
             .exec();
 
-        // Return the found entries
+        // Step 3: Return the found entries
         res.status(200).json(agence_destinations);
     } catch (error) {
         console.log(error);
         res.status(500).json(error.message);
     }
 };
+
 
 
 module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination}
