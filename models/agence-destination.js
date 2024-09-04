@@ -1,5 +1,6 @@
 
 const mongoose = require('mongoose')
+const { Schema } = mongoose;
 
 const agenceDestinationSchema = new mongoose.Schema({
     // villeA: String,
