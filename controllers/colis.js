@@ -194,6 +194,42 @@ const update_colis_my_data = async (req, res) => {
     }
 };
 
+const finish_update_colis_ = async (req, res) => {
+    try {
+        const { id } = req.params; // Get the colis ID from the request parameters
+
+        // Check if the Colis exists
+        const colis = await Colis.findById(id);
+        if (!colis) {
+            return res.status(404).json({ message: "Colis non trouvé !" });
+        }
+
+        const { nomUser, phoneUser, adresseUser } = req.body; // Extract user data from the request body
+
+        // Create a new user with the provided information
+        const newUser = new User({
+            nomUser,
+            phoneUser,
+            adresseUser
+        });
+
+        // Save the new user to the database
+        const savedUser = await newUser.save();
+
+        // Prepare the update object with the new user's ID
+        const updates = {
+            id_userB: savedUser._id
+        };
+
+        // Update the existing Colis with the new user ID
+        const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
+
+        res.status(200).json({ message: "Colis mis à jour avec succès !", colis: updated_colis });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message);
+    }
+};
 
 
-module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data}
+module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis_}

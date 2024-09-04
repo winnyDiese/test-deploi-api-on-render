@@ -8,6 +8,7 @@ router.post('/colis', add_colis)
 router.delete('/colis/:id', delete_colis)
 
 router.put('/colis/my-data/:id', update_colis_my_data)
+router.put('/colis/my-data/:id', update_colis_my_data)
 router.put('/colis/:id', update_colis)
 
 router.get('/colis/:id', one_colis)
