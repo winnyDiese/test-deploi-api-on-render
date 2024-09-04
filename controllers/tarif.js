@@ -7,6 +7,14 @@ const Destination = require('../models/destination'); // Assurez-vous de mettre 
 const all_tarif = async (req,res)=>{
     try {
         const tarif = await Tarif.find()
+        .populate({
+            path: 'id_destination',
+            populate: [
+                { path: 'id_villeA' }, // Populez id_villeA à l'intérieur de id_destination
+                { path: 'id_villeB' }  // Populez id_villeB à l'intérieur de id_destination
+            ]
+        })
+        .populate('id_agence_dest')
         res.status(200).json(tarif)
     } catch (error) {
         console.log(error)

@@ -10,8 +10,12 @@ const tarifSchema = new mongoose.Schema({
     dateTarif:String,
     id_agence_dest:{
         type: mongoose.Schema.Types.ObjectId, // Définit id_destination comme un ObjectId
+        ref: 'Agence' // Référence à la collection Destination
+    },
+    id_destination:{
+        type: mongoose.Schema.Types.ObjectId, // Définit id_destination comme un ObjectId
         ref: 'Destination' // Référence à la collection Destination
-    }
+    },
 },{ timestamps: true })
 
 const Tarif = mongoose.models.Tarif || mongoose.model('Tarif',tarifSchema)
