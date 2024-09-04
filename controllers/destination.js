@@ -6,6 +6,9 @@ const Destination = require('../models/destination')
 const all_destination = async (req,res)=>{
     try {
         const destinations = await Destination.find()
+        .populate('id_villeA')
+        .populate('id_villeB')
+        
         res.status(200).json(destinations)
     } catch (error) {
         console.log(error)
