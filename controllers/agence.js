@@ -1,6 +1,7 @@
 
 
 const Agence = require('../models/agence')
+const AgenceDestination = require('../models/agence-destination')
 
 // const Agence = require('./models/Agence'); // Assurez-vous que le chemin est correct
 // const Compte = require('./models/Compte'); // Assurez-vous que le chemin est correct
@@ -140,8 +141,8 @@ const get_agence_by_destination = async (req, res) => {
     try {
         // Find all AgenceDestination entries with the given id_destination and populate the id_agence field
         const agence_destinations = await AgenceDestination.find({ id_destination })
-            .populate('id_agence') // Populate the id_agence field with the related Agence documents
-            .exec();
+            // .populate('id_agence') // Populate the id_agence field with the related Agence documents
+            // .exec();
 
         // Return the found entries
         res.status(200).json(agence_destinations);
