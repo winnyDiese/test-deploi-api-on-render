@@ -141,8 +141,9 @@ const get_agence_by_destination = async (req, res) => {
     try {
         // Find all AgenceDestination entries with the given id_destination and populate the id_agence field
         const agence_destinations = await AgenceDestination.find({ id_destination })
-            // .populate('id_agence') // Populate the id_agence field with the related Agence documents
-            // .exec();
+            .populate('id_agence') // Populate the id_agence field with the related Agence documents
+            .populate('id_destination') // Populate the id_agence field with the related Agence documents
+            .exec();
 
         // Return the found entries
         res.status(200).json(agence_destinations);
