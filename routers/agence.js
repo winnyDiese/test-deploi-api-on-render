@@ -10,6 +10,7 @@ router.delete('/agence/:id', delete_agence)
 router.put('/agence/:id', update_agence)
 
 router.get('/agence/compte', get_agences_with_comptes)
+router.get('/agence/by-destination/:id_destination', get_agences_with_comptes)
 
 router.get('/agence/active', get_active_agences)
 router.get('/agence/desactive', get_inactive_agences)
