@@ -24,6 +24,7 @@ const add_colis = async (req,res)=>{
         id_userB,
         id_extensionA,
         id_extensionB,
+        id_destination,
         id_tarif
     } = await req.body 
     
@@ -37,6 +38,7 @@ const add_colis = async (req,res)=>{
         id_userB,
         id_extensionA,
         id_extensionB,
+        id_destination,
         id_tarif
     })
 
