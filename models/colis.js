@@ -21,10 +21,12 @@ const colisSchema = new mongoose.Schema({
     id_userB:String,
     id_extensionA:String,
     id_extensionB:String,
+    id_tarif:String,
+
     id_destination:String,
     completed:Boolean,
     status:String,
-    id_tarif:String
+    id_agence:String
 
 },{ timestamps: true })
 
