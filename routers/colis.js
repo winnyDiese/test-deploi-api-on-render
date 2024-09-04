@@ -6,6 +6,8 @@ const router = express.Router()
 router.get('/colis', all_colis)
 router.post('/colis', add_colis)
 router.delete('/colis/:id', delete_colis)
+
+router.put('/colis/myData/:id', update_colis)
 router.put('/colis/:id', update_colis)
 
 router.get('/colis/:id', one_colis)
