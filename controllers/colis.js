@@ -250,5 +250,4 @@ const finish_update_colis = async (req, res) => {
     }
 };
 
-
 module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis}
