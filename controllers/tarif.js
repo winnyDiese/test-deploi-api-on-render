@@ -2,6 +2,7 @@
 
 const Tarif = require('../models/tarif')
 const Destination = require('../models/destination'); // Assurez-vous de mettre le bon chemin vers votre modèle Destination
+const AgenceDestination = require('../models/agence-destination');
 
 
 const all_tarif = async (req,res)=>{
@@ -24,31 +25,42 @@ const all_tarif = async (req,res)=>{
 
 
 const add_tarif = async (req, res) => {
-    const { prix, dateTarif, id_agence_dest, id_villeA, id_villeB } = await req.body;
+    const { prix, dateTarif, id_agence_dest, id_villeA, id_villeB } = req.body;
     
     try {
-        // Étape 1: Créer la destination
+        // Step 1: Create the destination
         const new_destination = new Destination({ id_villeA, id_villeB });
         const saved_destination = await new_destination.save();
 
-        // Étape 2: Utiliser l'ID de la destination sauvegardée pour créer un tarif
+        // Step 2: Insert into AgenceDestination collection
+        const new_agence_destination = new AgenceDestination({
+            id_agence: id_agence_dest, // ID of the agency
+            id_destination: saved_destination._id, // Use the saved destination ID
+            statutDest: 'active' // Assuming you want to set a default status
+        });
+        const saved_agence_destination = await new_agence_destination.save();
+
+        // Step 3: Create the tariff using the saved destination and agency-destination IDs
         const new_tarif = new Tarif({
             prix,
             dateTarif,
-            id_agence_dest, // ID de l'agence
-            id_destination: saved_destination._id // Associe l'ID de la destination au tarif
+            id_agence_dest: saved_agence_destination._id, // Use the saved agence_destination ID
+            id_destination: saved_destination._id // Associate the destination ID with the tariff
         });
 
         const saved_tarif = await new_tarif.save();
 
-        // Étape 3: Répondre avec le tarif et la destination sauvegardés
-        res.status(201).json({ tarif: saved_tarif, destination: saved_destination });
+        // Step 4: Respond with the saved tariff, destination, and agence_destination
+        res.status(201).json({
+            tarif: saved_tarif,
+            destination: saved_destination,
+            agence_destination: saved_agence_destination
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
     }
-}
-
+};
 
 
 const delete_tarif = async (req,res) => {
