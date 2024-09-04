@@ -28,7 +28,10 @@ const add_colis = async (req,res)=>{
         id_destination,
         completed,
         status,
-        id_tarif
+        id_tarif,
+
+        id_agence
+        
     } = await req.body 
     
     const new_colis = new Colis({
@@ -44,7 +47,9 @@ const add_colis = async (req,res)=>{
         id_destination,
         completed,
         status,
-        id_tarif
+        id_tarif,
+
+        id_agence
     })
 
     try {
