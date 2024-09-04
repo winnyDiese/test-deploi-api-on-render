@@ -1,6 +1,7 @@
 
 const Colis = require('../models/colis')
 const User = require('../models/User'); // Import the User model
+const Compte = require('../models/Compte'); // Make sure to adjust the path
 
 
 
@@ -194,9 +195,10 @@ const update_colis_my_data = async (req, res) => {
     }
 };
 
+
 const finish_update_colis = async (req, res) => {
     try {
-        const { id } = req.params; // Get the colis ID from the request parameters
+        const { id } = req.params; // Get the Colis ID from the request parameters
 
         // Check if the Colis exists
         const colis = await Colis.findById(id);
@@ -224,7 +226,24 @@ const finish_update_colis = async (req, res) => {
         // Update the existing Colis with the new user ID
         const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
 
-        res.status(200).json({ message: "Colis mis à jour avec succès !", colis: updated_colis });
+        // Find the Compte associated with the Colis's id_agence
+        const compte = await Compte.findOne({ id_agence: colis.id_agence });
+        if (!compte) {
+            return res.status(404).json({ message: "Compte non trouvé pour l'agence spécifiée !" });
+        }
+
+        // Decrement the montantCompte by 1
+        const newMontantCompte = parseFloat(compte.montantCompte) - 1;
+
+        // Update the Compte with the new montantCompte
+        compte.montantCompte = newMontantCompte.toString(); // Convert back to string if necessary
+        await compte.save();
+
+        res.status(200).json({ 
+            message: "Colis et Compte mis à jour avec succès !", 
+            colis: updated_colis,
+            compte 
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json(error.message);
