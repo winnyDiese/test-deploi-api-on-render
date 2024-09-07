@@ -12,6 +12,7 @@ const historiqueColisSchema = new Schema({
     id_colis: String,
     id_statut: String,
     id_user: String
+    
 })
 
 const HistoriqueColis = mongoose.models.HistoriqueColis || mongoose.model('HistoriqueColis', historiqueColisSchema)
