@@ -2,6 +2,7 @@
 const Colis = require('../models/colis')
 const User = require('../models/User'); // Import the User model
 const Compte = require('../models/Compte'); // Make sure to adjust the path
+const HistoriqueColis = require('../models/historiqueColis');
 
 
 
@@ -126,7 +127,15 @@ const colis_bycode = async (req,res) => {
         })
     
         if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
-        res.status(200).json(colis)
+       
+        // Find all history entries related to the Colis using id_colis
+        const historiqueColis = await HistoriqueColis.find({ id_colis: colis._id });
+
+        // Return both the Colis details and the corresponding history
+        res.status(200).json({
+            colis,
+            historique: historiqueColis
+        });
 
     } catch (error) {
         console.log(error)
@@ -263,6 +272,15 @@ const finish_update_colis = async (req, res) => {
         // Update the Compte with the new montantCompte
         compte.montantCompte = newMontantCompte.toString(); // Convert back to string if necessary
         await compte.save();
+
+        // Create a new history entry
+        const newHistorique = new HistoriqueColis({
+            id_colis: updated_colis._id,
+            id_statut: updated_colis.status
+        });
+
+        // Save the history entry
+        await newHistorique.save();
 
         res.status(200).json({ 
             message: `Le colis a été bien créée voici voici le code du colis "${updated_colis.codeColis}"`
