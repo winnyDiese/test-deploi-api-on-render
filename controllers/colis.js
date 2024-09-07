@@ -8,7 +8,8 @@ const HistoriqueColis = require('../models/historiqueColis');
 
 const all_colis = async (req,res)=>{
     try {
-        const colis = await Colis.findOne()
+
+        const colis = await Colis.find()
         .populate('id_userA')
         .populate('id_userB')
         .populate('id_agence')
@@ -19,7 +20,8 @@ const all_colis = async (req,res)=>{
                 { path: 'id_villeB' }   // Nested populate for id_villeB within id_destination
             ]
         })
-        
+        .sort({createdAt: -1})
+
         res.status(200).json(colis)
     } catch (error) {
         console.log(error)
