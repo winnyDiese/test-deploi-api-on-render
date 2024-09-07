@@ -214,7 +214,6 @@ const update_colis_my_data = async (req, res) => {
     }
 };
 
-
 const finish_update_colis = async (req, res) => {
     try {
         const { id } = req.params; // Get the Colis ID from the request parameters
@@ -365,4 +364,17 @@ const colis_change_status = async (req, res) => {
 }
 
 
-module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis,send_my_identity,colis_change_status}
+module.exports = {
+    all_colis, 
+    add_colis,
+    delete_colis,
+    update_colis,
+    one_colis,
+    colis_bycode,
+    colis_byuser_a,
+    colis_byuser_b, 
+    update_colis_my_data,
+    finish_update_colis,
+    send_my_identity,
+    colis_change_status
+}

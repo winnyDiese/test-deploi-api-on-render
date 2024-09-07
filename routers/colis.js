@@ -8,11 +8,11 @@ router.post('/colis', add_colis)
 router.delete('/colis/:id', delete_colis)
 
 router.put('/colis/my-data/:id', update_colis_my_data)
-router.put('/colis/finish-send/:id', finish_update_colis)
-router.put('/colis/:id', update_colis)
 router.put('/colis/send-my-identity/:id', send_my_identity)
-
+router.put('/colis/finish-send/:id', finish_update_colis)
 router.put('/colis/change-status/:id', colis_change_status)
+router.put('/colis/:id', update_colis)
+
 
 router.get('/colis/:id', one_colis)
 router.get('/colis/code/:codeColis', colis_bycode)
