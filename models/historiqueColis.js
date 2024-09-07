@@ -13,7 +13,7 @@ const historiqueColisSchema = new Schema({
     id_statut: String,
     id_user: String
     
-})
+}, { timestamps: true })
 
 const HistoriqueColis = mongoose.models.HistoriqueColis || mongoose.model('HistoriqueColis', historiqueColisSchema)
 module.exports = HistoriqueColis

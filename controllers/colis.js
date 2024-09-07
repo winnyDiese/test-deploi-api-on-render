@@ -352,6 +352,17 @@ const colis_change_status = async (req, res) => {
             return res.status(404).json({ message: 'Colis non trouvé !' });
         }
 
+
+        // Crée une nouvelle entrée d'historique pour ce changement de statut
+        const newHistorique = new HistoriqueColis({
+            id_colis: updated_colis._id,
+            id_statut: updated_colis.status, // Utilise le nouveau statut
+            // date: new Date() // Enregistre la date du changement de statut
+        });
+
+        // Sauvegarde l'entrée d'historique
+        await newHistorique.save();
+
         // Envoie la réponse avec le colis mis à jour
         res.status(200).json({
             message: 'Statut du colis mis à jour avec succès !',
