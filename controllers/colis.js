@@ -110,10 +110,10 @@ const one_colis = async (req,res) => {
 }
 
 const colis_bycode = async (req,res) => {
-    const { id } = req.params
+    const { codeColis } = req.params
 
     try {
-        const colis = await Colis.find({codeColis:id})
+        const colis = await Colis.findOne({codeColis})
     
         if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
         res.status(200).json(colis)
@@ -301,7 +301,7 @@ const send_my_identity = async (req, res) => {
         });
 
         console.log("Send colis step two : send my identity ! ")
-        
+
     } catch (error) {
         console.error(error); // Log l'erreur sur le serveur pour le debugging
         res.status(500).json({ message: "Une erreur est survenue lors du traitement de la demande.", error: error.message });
