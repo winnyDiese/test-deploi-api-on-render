@@ -316,7 +316,7 @@ const send_my_identity = async (req, res) => {
         console.error(error); // Log l'erreur sur le serveur pour le debugging
         res.status(500).json({ message: "Une erreur est survenue lors du traitement de la demande.", error: error.message });
     }
-};
+}
 
 
 module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis,send_my_identity}
