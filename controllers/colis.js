@@ -222,7 +222,7 @@ const finish_update_colis = async (req, res) => {
          const generateCodeColis = () => {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let code = '';
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 15; i++) {
                 const randomIndex = Math.floor(Math.random() * characters.length);
                 code += characters[randomIndex];
             }
@@ -255,9 +255,7 @@ const finish_update_colis = async (req, res) => {
         await compte.save();
 
         res.status(200).json({ 
-            message: "Colis et Compte mis à jour avec succès !", 
-            colis: updated_colis,
-            compte 
+            message: `Le colis a été bien créée voici voici le code du colis "${updated_colis.codeColis}"`
         });
     } catch (error) {
         console.log(error);
