@@ -263,4 +263,50 @@ const finish_update_colis = async (req, res) => {
     }
 };
 
-module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis}
+const send_my_identity = async (req, res) => {
+    try {
+        const { id } = req.params; // Récupérer l'ID du colis à partir des paramètres de la requête
+
+        // Vérifier si le Colis existe
+        const colis = await Colis.findById(id);
+        if (!colis) {
+            return res.status(404).json({ message: "Colis non trouvé !" });
+        }
+
+        // Extraire les données de l'utilisateur depuis le corps de la requête
+        const { nomUser, phoneUser, adresseUser } = req.body;
+
+        // Créer un nouvel utilisateur avec les informations fournies
+        const newUser = new User({
+            nomUser,
+            phoneUser,
+            adresseUser
+        });
+
+        // Sauvegarder le nouvel utilisateur dans la base de données
+        const savedUser = await newUser.save();
+
+        // Préparer l'objet de mise à jour avec l'ID de l'utilisateur nouvellement créé
+        const updates = {
+            id_userA: savedUser._id, // Mettre à jour le champ id_userB avec l'ID de l'utilisateur
+        };
+
+        // Mettre à jour le colis existant avec l'ID de l'utilisateur et retourner le colis mis à jour
+        const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
+
+        // Envoyer une réponse de succès avec le colis mis à jour
+        res.status(200).json({
+            message: "Les informations utilisateur ont été enregistrées avec succès et le colis mis à jour.",
+            colis: updated_colis, // Retourner les détails du colis mis à jour
+        });
+
+        console.log("Send colis step two : send my identity ! ")
+        
+    } catch (error) {
+        console.error(error); // Log l'erreur sur le serveur pour le debugging
+        res.status(500).json({ message: "Une erreur est survenue lors du traitement de la demande.", error: error.message });
+    }
+};
+
+
+module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis,send_my_identity}
