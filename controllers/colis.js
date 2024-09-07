@@ -218,9 +218,24 @@ const finish_update_colis = async (req, res) => {
         // Save the new user to the database
         const savedUser = await newUser.save();
 
+         // Generate a random codeColis with 10 alphanumeric characters
+         const generateCodeColis = () => {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let code = '';
+            for (let i = 0; i < 10; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters[randomIndex];
+            }
+            return code;
+        };
+
+        const codeColis = generateCodeColis();
+
         // Prepare the update object with the new user's ID
         const updates = {
-            id_userB: savedUser._id
+            id_userB: savedUser._id,
+            codeColis,
+            completed: true
         };
 
         // Update the existing Colis with the new user ID
