@@ -1,35 +1,27 @@
-
 const mongoose = require('mongoose')
+
 const colisSchema = new mongoose.Schema({
-    // contenus: String,
-    // poid: String,
-    // valeurContenu: String,
-    // completed:Boolean,
-    // agence: String,
-    // expediteur: String,
-    // beneficiare: String,
-    // extensionDepart: String,
-    // extensionArrive: String,
-    // tarif: String
-
     codeColis: String,
-    poids:String,
-    contenu:String,
-    valeur:String,
-    source:String,
-    id_userA:String,
-    id_userB:String,
-    id_extensionA:String,
-    id_extensionB:String,
-    id_tarif:String,
+    poids: String,
+    contenu: String,
+    valeur: String,
+    source: String,
+    
+    id_userA: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },  // Referencing the User model
+    id_userB: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
-    id_destination:String,
-    completed:Boolean,
-    status:String,
-    id_agence:String
+    id_extensionA: String,
+    id_extensionB: String,
+    id_tarif: String,
 
-},{ timestamps: true })
+    id_destination: { type: mongoose.Schema.Types.ObjectId, ref: 'Destination' },  // Referencing the Destination model
 
+    completed: Boolean,
+    status: String,
+    
+    id_agence: { type: mongoose.Schema.Types.ObjectId, ref: 'Agence' }  // Referencing the Agence model
+
+}, { timestamps: true })
 
 const Colis = mongoose.models.Colis || mongoose.model('Colis', colisSchema)
 

@@ -114,6 +114,10 @@ const colis_bycode = async (req,res) => {
 
     try {
         const colis = await Colis.findOne({codeColis})
+        .populate('id_userA')
+        .populate('id_userB')
+        .populate('id_destination')
+        .populate('id_agence')
     
         if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
         res.status(200).json(colis)
