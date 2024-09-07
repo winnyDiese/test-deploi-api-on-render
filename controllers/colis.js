@@ -8,7 +8,18 @@ const HistoriqueColis = require('../models/historiqueColis');
 
 const all_colis = async (req,res)=>{
     try {
-        const colis = await Colis.find()
+        const colis = await Colis.findOne()
+        .populate('id_userA')
+        .populate('id_userB')
+        .populate('id_agence')
+        .populate({
+            path: 'id_destination',  // Populate the id_destination field
+            populate: [
+                { path: 'id_villeA' },  // Nested populate for id_villeA within id_destination
+                { path: 'id_villeB' }   // Nested populate for id_villeB within id_destination
+            ]
+        })
+        
         res.status(200).json(colis)
     } catch (error) {
         console.log(error)
@@ -143,7 +154,6 @@ const colis_bycode = async (req,res) => {
     }
 
 }
-
 
 const colis_byuser_a = async (req,res) => {
     const { id } = req.params
@@ -374,7 +384,6 @@ const colis_change_status = async (req, res) => {
     }
 }
 
-
 module.exports = {
     all_colis, 
     add_colis,
@@ -389,3 +398,4 @@ module.exports = {
     send_my_identity,
     colis_change_status
 }
+
