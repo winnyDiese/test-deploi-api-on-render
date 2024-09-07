@@ -13,19 +13,26 @@ const all_story_colis = async (req,res)=>{
     }
 }
 
-const add_story_colis = async (req,res)=>{
-    const {dateNotif, id_user_notif, message} = await req.body
-    
-    const new_story_colis = new HistoriqueColis({dateNotif, id_user_notif, message})
+const add_story_colis = async (req, res) => {
+    const { id_colis, id_statut, id_user } = req.body;
+
+    // Create a new HistoriqueColis document with the provided data
+    const new_story_colis = new HistoriqueColis({
+        id_colis,
+        id_statut,
+        id_user
+    });
 
     try {
-        const saved_story_colis = await new_story_colis.save()
-        res.status(201).json(saved_story_colis)
+        // Save the new HistoriqueColis document to the database
+        const saved_story_colis = await new_story_colis.save();
+        res.status(201).json(saved_story_colis);
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+        console.log(error);
+        res.status(500).json({ message: error.message });
     }
-}
+};
+
 
 const delete_story_colis = async (req,res) => {
     const { id } = req.params;
