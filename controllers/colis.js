@@ -336,5 +336,33 @@ const send_my_identity = async (req, res) => {
     }
 }
 
+const colis_change_status = async (req, res) => {
+    try {
+        const { id } = req.params; // Récupère l'ID du colis à partir des paramètres de l'URL
+        const { status } = req.body; // Récupère le nouveau statut à partir du corps de la requête
 
-module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis,send_my_identity}
+        // Recherche et met à jour le statut du colis
+        const updated_colis = await Colis.findByIdAndUpdate(
+            id, 
+            { status }, // Met à jour uniquement le champ "status"
+            { new: true } // Retourne le document mis à jour
+        );
+
+        // Vérifie si le colis existe
+        if (!updated_colis) {
+            return res.status(404).json({ message: 'Colis non trouvé !' });
+        }
+
+        // Envoie la réponse avec le colis mis à jour
+        res.status(200).json({
+            message: 'Statut du colis mis à jour avec succès !',
+            colis: updated_colis
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message);
+    }
+}
+
+
+module.exports = {all_colis, add_colis,delete_colis,update_colis,one_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data,finish_update_colis,send_my_identity,colis_change_status}
