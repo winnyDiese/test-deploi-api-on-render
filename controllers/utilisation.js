@@ -73,6 +73,24 @@ const one_using = async (req,res) => {
 
 }
 
+const using_agence = async (req, res) => {
+    const { id_compte } = req.params; // Get the Compte ID from the request parameters
+
+    try {
+        // Find all utilisations associated with the given id_compte
+        const utilisations = await Utilisation.find({ id_compte });
+
+        if (!utilisations.length) {
+            return res.status(404).json({ message: 'Aucune utilisation trouvée pour ce compte.' });
+        }
+
+        res.status(200).json(utilisations);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
-module.exports = {all_using, add_using, delete_using, update_using, one_using}
+
+module.exports = {all_using, add_using, delete_using, update_using, one_using, using_agence}
