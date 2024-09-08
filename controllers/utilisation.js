@@ -1,6 +1,7 @@
 
 
 const Utilisation = require('../models/utilisation')
+const Colis = require('../models/colis')
 
 
 
@@ -84,12 +85,35 @@ const using_agence = async (req, res) => {
             return res.status(404).json({ message: 'Aucune utilisation trouvée pour ce compte.' });
         }
 
-        res.status(200).json(utilisations);
+        // Fetch details for each colis associated with the utilisations
+        const colisDetails = await Promise.all(
+            utilisations.map(async (utilisation) => {
+                const colis = await Colis.findById(utilisation.id_colis)
+                    .populate('id_userA')
+                    .populate('id_userB')
+                    .populate('id_agence')
+                    .populate({
+                        path: 'id_destination',  // Populate the id_destination field
+                        populate: [
+                            { path: 'id_villeA' },  // Nested populate for id_villeA within id_destination
+                            { path: 'id_villeB' }   // Nested populate for id_villeB within id_destination
+                        ]
+                    });
+
+                return {
+                    ...utilisation._doc,
+                    colis: colis || null // Add the colis details to the utilisation
+                };
+            })
+        );
+
+        res.status(200).json(colisDetails);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 
