@@ -112,6 +112,16 @@ const one_colis = async (req,res) => {
 
     try {
         const colis = await Colis.findById(id)
+        .populate('id_userA')
+        .populate('id_userB')
+        .populate('id_agence')
+        .populate({
+            path: 'id_destination',  // Populate the id_destination field
+            populate: [
+                { path: 'id_villeA' },  // Nested populate for id_villeA within id_destination
+                { path: 'id_villeB' }   // Nested populate for id_villeB within id_destination
+            ]
+        })
     
         if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
         res.status(200).json(colis)
