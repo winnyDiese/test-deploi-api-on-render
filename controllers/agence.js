@@ -120,7 +120,8 @@ const get_agences_with_comptes = async (req, res) => {
                     emailAgence: 1,
                     logo: 1,
                     active: 1,
-                    montantCompte: '$comptes.montantCompte' // Inclut le montantCompte de chaque compte associé
+                    montantCompte: '$comptes.montantCompte', // Inclut le montantCompte de chaque compte associé
+                    solde: '$comptes.solde' // Inclut le solde de chaque compte associé
                 }
             }
         ]);
@@ -135,6 +136,7 @@ const get_agences_with_comptes = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const get_agence_by_destination = async (req, res) => {
     const { id_colis } = req.params; // Get the id_colis from the request parameters
