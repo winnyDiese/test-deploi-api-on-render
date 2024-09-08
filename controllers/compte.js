@@ -101,10 +101,12 @@ const update_and_add_montant_compte_by_agence = async (req, res) => {
 
         if (compte) {
             // Si un compte existe, additionnez le montant actuel avec le nouveau montant
-            const nouveauMontant = parseFloat(compte.montantCompte) + parseFloat(montantCompte);
+            // const nouveauMontant = parseFloat(compte.solde) + parseFloat(montantCompte);
+            const nouveauMontant = parseFloat(compte.solde || 0) + parseFloat(montantCompte);
+
 
             // Mettez à jour le montant du compte trouvé
-            compte.montantCompte = montantCompte; // Convertir en chaîne si nécessaire
+            compte.montantCompte = montantCompte; // Convertir en chaîne si nécessaire  
             compte.dateCompte = dateCompte; // Mettre à jour les autres champs si nécessaire
             compte.typeCompte = "Vente";
             compte.solde = nouveauMontant.toString();
