@@ -1,5 +1,6 @@
 
 
+const Agence = require('../models/agence')
 const Compte = require('../models/compte')
 
 
@@ -91,7 +92,7 @@ const get_comptes_by_agence = async (req, res) => {
     }
 };
 
-const update_and_add_montant_compte_by_agence = async (req, res) => {
+const update_and_add_montant_compte_by_agencex = async (req, res) => {
     const { id_agence } = req.params; // ID de l'agence pour laquelle vous souhaitez mettre à jour ou créer le compte
     const { montantCompte, dateCompte, typeCompte, solde, id_user } = req.body; // Nouveau montant à ajouter et autres champs nécessaires
 
@@ -128,6 +129,45 @@ const update_and_add_montant_compte_by_agence = async (req, res) => {
             const saved_compte = await new_compte.save();
             return res.status(201).json(saved_compte);
         }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const update_and_add_montant_compte_by_agence = async (req, res) => {
+    const { id_agence } = req.params; // ID de l'agence pour laquelle vous souhaitez créer un nouveau compte
+    const { montantCompte, dateCompte, id_user } = req.body; // Nouveau montant à ajouter et autres champs nécessaires
+
+    try {
+        // Vérifiez d'abord si l'agence existe
+        const agence = await Agence.findById(id_agence);
+        
+        if (!agence) {
+            return res.status(404).json({ message: 'Agence not found' });
+        }
+
+        // Mettre à jour le solde de l'agence
+        agence.solde = parseFloat(agence.solde || 0) + parseFloat(montantCompte);
+
+        // Sauvegarder la mise à jour de l'agence avant de créer le compte
+        const updatedAgence = await agence.save();
+
+        // Créer un nouveau compte avec le montant et le solde mis à jour de l'agence
+        const new_compte = new Compte({
+            dateCompte,
+            typeCompte: "Vente", // Le type est toujours "Vente"
+            montantCompte, // Le montant ajouté
+            solde: updatedAgence.solde, // Utiliser le solde mis à jour de l'agence
+            id_agence, // Lier le compte à l'agence
+            id_user // Lier l'utilisateur à la transaction
+        });
+
+        // Sauvegarder le nouveau compte
+        const saved_compte = await new_compte.save();
+
+        // Retourner les informations du compte et de l'agence mis à jour
+        return res.status(201).json({ saved_compte, updatedAgence });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
