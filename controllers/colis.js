@@ -248,29 +248,145 @@ const update_colis_my_data = async (req, res) => {
     }
 };
 
+// const finish_update_colis = async (req, res) => {
+//     try {
+//         const { id } = req.params; // Get the Colis ID from the request parameters
+
+//         // Check if the Colis exists
+//         const colis = await Colis.findById(id);
+//         if (!colis) {
+//             return res.status(404).json({ message: "Colis non trouvé !" });
+//         }
+
+//         const { nomUser, phoneUser, adresseUser } = req.body; // Extract user data from the request body
+
+//         // Create a new user with the provided information
+//         const newUser = new User({
+//             nomUser,
+//             phoneUser,
+//             adresseUser
+//         });
+
+//         // Save the new user to the database
+//         const savedUser = await newUser.save();
+
+//         // Generate a random codeColis with 15 alphanumeric characters
+//         const generateCodeColis = () => {
+//             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//             let code = '';
+//             for (let i = 0; i < 15; i++) {
+//                 const randomIndex = Math.floor(Math.random() * characters.length);
+//                 code += characters[randomIndex];
+//             }
+//             return code;
+//         };
+
+//         const codeColis = generateCodeColis();
+
+//         // Prepare the update object with the new user's ID
+//         const updates = {
+//             id_userB: savedUser._id,
+//             codeColis,
+//             completed: true
+//         };
+
+//         // Update the existing Colis with the new user ID
+//         const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
+
+//         // Find the agency associated with the Colis
+//         const agence = await Agence.findById(colis.id_agence);
+//         if (!agence) {
+//             return res.status(404).json({ message: "Agence non trouvée pour le colis spécifié !" });
+//         }
+
+//         // Check if the solde exists and is greater than 0
+//         const currentSolde = parseFloat(agence.solde) || 0; // Default to 0 if solde is not defined
+//         if (currentSolde <= 0) {
+//             return res.status(400).json({ message: "Pas assez de crédit pour traiter cette demande." });
+//         }
+
+//         // Find the latest compte for the given agence
+//         const lastCompte = await Compte.findOne({ id_agence: colis.id_agence }).sort({ createdAt: -1 });
+
+//         if (lastCompte && lastCompte.typeCompte === 'Using') {
+//             // Update the agency's solde
+//             const newSoldeAgence = currentSolde - 1;
+//             agence.solde = newSoldeAgence.toString(); // Convert back to string if necessary
+//             await agence.save();
+
+//             // Update the last compte's solde
+//             const newSoldeCompte = parseFloat(lastCompte.solde) - 1;
+//             lastCompte.solde = newSoldeCompte.toString(); // Convert back to string if necessary
+//             await lastCompte.save();
+
+//             // Create a new utilisation entry
+//             const newUtilisation = new Utilisation({
+//                 id_compte: lastCompte._id,
+//                 id_colis: updated_colis._id,
+//                 montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
+//             });
+//             await newUtilisation.save();
+
+//         } else {
+//             // Create a new compte with type 'Using'
+//             const newCompte = new Compte({
+//                 id_agence: colis.id_agence,
+//                 typeCompte: 'Using',
+//                 solde: currentSolde - 1, // Initial solde for the new account
+//                 montantCompte: '1', // Assuming initial montantCompte is 1, adjust as needed
+//                 dateCompte: new Date(),
+//                 // Add other fields if necessary
+//             });
+
+//             // Save the new account to the database
+//             await newCompte.save();
+
+//             // Update the agency's solde
+//             agence.solde = (currentSolde - 1).toString(); // Convert back to string if necessary
+//             await agence.save();
+
+//             // Create a new utilisation entry
+//             const newUtilisation = new Utilisation({
+//                 id_compte: newCompte._id,
+//                 id_colis: updated_colis._id,
+//                 montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
+//             });
+//             await newUtilisation.save();
+//         }
+
+//         res.status(200).json({ 
+//             message: `Le colis a été bien enregistré. Voici le code du colis : "${updated_colis.codeColis}"`
+//         });
+
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+
 const finish_update_colis = async (req, res) => {
     try {
-        const { id } = req.params; // Get the Colis ID from the request parameters
+        const { id } = req.params; // Récupère l'ID du colis depuis les paramètres de la requête
+        const { nomUser, phoneUser, adresseUser, id_user } = req.body; // Extract user data and ID of the user performing the action from the request body
 
-        // Check if the Colis exists
+        // Vérifier si le colis existe
         const colis = await Colis.findById(id);
         if (!colis) {
             return res.status(404).json({ message: "Colis non trouvé !" });
         }
 
-        const { nomUser, phoneUser, adresseUser } = req.body; // Extract user data from the request body
-
-        // Create a new user with the provided information
+        // Créer un nouvel utilisateur avec les informations fournies
         const newUser = new User({
             nomUser,
             phoneUser,
             adresseUser
         });
 
-        // Save the new user to the database
+        // Sauvegarder le nouvel utilisateur dans la base de données
         const savedUser = await newUser.save();
 
-        // Generate a random codeColis with 15 alphanumeric characters
+        // Générer un codeColis aléatoire de 15 caractères alphanumériques
         const generateCodeColis = () => {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let code = '';
@@ -283,77 +399,89 @@ const finish_update_colis = async (req, res) => {
 
         const codeColis = generateCodeColis();
 
-        // Prepare the update object with the new user's ID
+        // Préparer l'objet de mise à jour avec l'ID du nouvel utilisateur
         const updates = {
             id_userB: savedUser._id,
             codeColis,
             completed: true
         };
 
-        // Update the existing Colis with the new user ID
+        // Mettre à jour le colis avec les nouvelles informations
         const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
 
-        // Find the agency associated with the Colis
+        // Trouver l'agence associée au colis
         const agence = await Agence.findById(colis.id_agence);
         if (!agence) {
             return res.status(404).json({ message: "Agence non trouvée pour le colis spécifié !" });
         }
 
-        // Check if the solde exists and is greater than 0
-        const currentSolde = parseFloat(agence.solde) || 0; // Default to 0 if solde is not defined
+        // Vérifier si le solde de l'agence est supérieur à 0
+        const currentSolde = parseFloat(agence.solde) || 0; // Valeur par défaut 0 si non définie
         if (currentSolde <= 0) {
             return res.status(400).json({ message: "Pas assez de crédit pour traiter cette demande." });
         }
 
-        // Find the latest compte for the given agence
+        // Trouver le dernier compte pour l'agence
         const lastCompte = await Compte.findOne({ id_agence: colis.id_agence }).sort({ createdAt: -1 });
 
         if (lastCompte && lastCompte.typeCompte === 'Using') {
-            // Update the agency's solde
+            // Mettre à jour le solde de l'agence
             const newSoldeAgence = currentSolde - 1;
-            agence.solde = newSoldeAgence.toString(); // Convert back to string if necessary
+            agence.solde = newSoldeAgence.toString(); // Conversion en string si nécessaire
             await agence.save();
 
-            // Update the last compte's solde
+            // Mettre à jour le solde du dernier compte
             const newSoldeCompte = parseFloat(lastCompte.solde) - 1;
-            lastCompte.solde = newSoldeCompte.toString(); // Convert back to string if necessary
+            lastCompte.solde = newSoldeCompte.toString(); // Conversion en string si nécessaire
             await lastCompte.save();
 
-            // Create a new utilisation entry
+            // Créer une nouvelle entrée d'utilisation
             const newUtilisation = new Utilisation({
                 id_compte: lastCompte._id,
                 id_colis: updated_colis._id,
-                montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
+                montantRetire: '1' // Supposant que montantRetire est 1
             });
             await newUtilisation.save();
 
         } else {
-            // Create a new compte with type 'Using'
+            // Créer un nouveau compte de type 'Using'
             const newCompte = new Compte({
                 id_agence: colis.id_agence,
                 typeCompte: 'Using',
-                solde: currentSolde - 1, // Initial solde for the new account
-                montantCompte: '1', // Assuming initial montantCompte is 1, adjust as needed
+                solde: currentSolde - 1, // Solde initial pour le nouveau compte
+                montantCompte: '1', // Supposant que montantCompte initial est 1
                 dateCompte: new Date(),
-                // Add other fields if necessary
             });
 
-            // Save the new account to the database
+            // Sauvegarder le nouveau compte dans la base de données
             await newCompte.save();
 
-            // Update the agency's solde
-            agence.solde = (currentSolde - 1).toString(); // Convert back to string if necessary
+            // Mettre à jour le solde de l'agence
+            agence.solde = (currentSolde - 1).toString(); // Conversion en string si nécessaire
             await agence.save();
 
-            // Create a new utilisation entry
+            // Créer une nouvelle entrée d'utilisation
             const newUtilisation = new Utilisation({
                 id_compte: newCompte._id,
                 id_colis: updated_colis._id,
-                montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
+                montantRetire: '1' // Supposant que montantRetire est 1
             });
             await newUtilisation.save();
         }
 
+        // Utiliser le statut du colis (colis.status) pour le champ id_statut
+        const id_statut = colis.status; // Assigner le statut actuel du colis
+
+        // Créer et sauvegarder l'historique du colis
+        const newHistorique = new HistoriqueColis({
+            id_colis: updated_colis._id,
+            id_statut, // Utilise le statut du colis
+            id_user    // L'ID de l'utilisateur (qui a fait l'action) fourni dans req.body
+        });
+
+        await newHistorique.save();
+
+        // Envoyer la réponse avec le code du colis mis à jour
         res.status(200).json({ 
             message: `Le colis a été bien enregistré. Voici le code du colis : "${updated_colis.codeColis}"`
         });
@@ -363,6 +491,7 @@ const finish_update_colis = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const send_my_identity = async (req, res) => {
     try {
