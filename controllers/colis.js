@@ -9,7 +9,7 @@ const HistoriqueColis = require('../models/historiqueColis');
 const all_colis = async (req,res)=>{
     try {
 
-        const colis = await Colis.find()
+        const colis = await Colis.find({completed:true})
         .populate('id_userA')
         .populate('id_userB')
         .populate('id_agence')
@@ -124,7 +124,17 @@ const one_colis = async (req,res) => {
         })
     
         if (!colis) return res.status(404).json({ message: 'Colis non, trouvé !' });
-        res.status(200).json(colis)
+       
+        // Find all history entries related to the Colis using id_colis
+        const historiqueColis = await HistoriqueColis.find({ id_colis: colis._id });
+
+        // Return both the Colis details and the corresponding history
+        res.status(200).json({
+            colis,
+            historique: historiqueColis
+        });
+
+        // res.status(200).json(colis)
 
     } catch (error) {
         console.log(error)
