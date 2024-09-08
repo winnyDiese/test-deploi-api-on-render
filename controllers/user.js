@@ -156,7 +156,6 @@ const one_user = async (req,res)=>{
     }
 }
 
-
 const one_user_by_tel = async (req,res)=>{
     const { tel } = req.params;
     console.log(tel)
@@ -172,7 +171,6 @@ const one_user_by_tel = async (req,res)=>{
         res.status(500).json(error.message)
     }
 }
-
 
 const one_user_by_type_user = async (req,res)=>{
     const { type } = req.params;
@@ -204,5 +202,70 @@ const one_user_by_status = async (req,res)=>{
     }
 }
 
+const create_juste_user = async (req, res) => {
+    const {
+        nomUser,
+        fonctionAgent,
+        phoneUser,
+        passwordUser,
+        emailUser,
+        adresseUser,
+        sexe,
+        id_typeUser,
+        id_ville,
+        statutUser
+    } = req.body;
 
-module.exports = {all_user, add_user, user_login, one_user,delete_user,update_user,one_user_by_tel,one_user_by_type_user,one_user_by_status}
+    try {
+        // Vérifier si un utilisateur avec le même numéro de téléphone existe déjà
+        const existingUser = await User.findOne({ phoneUser });
+
+        if (existingUser) {
+            return res.status(400).json({ message: 'Un utilisateur avec ce numéro de téléphone existe déjà !' });
+        }
+
+        // Créer un nouvel utilisateur
+        const new_user = new User({
+            nomUser,
+            fonctionAgent,
+            phoneUser,
+            passwordUser,
+            emailUser,
+            adresseUser,
+            sexe,
+            id_typeUser,
+            id_ville,
+            statutUser
+        });
+
+        console.log('Nouveau utilisateur :', new_user);
+
+        // Enregistrer le nouvel utilisateur dans la base de données
+        const saved_user = await new_user.save();
+
+        // Réponse avec l'utilisateur enregistré
+        res.status(201).json({ user: saved_user });
+
+    } catch (error) {
+        if (error.code === 11000) {
+            // Gestion des erreurs de doublon
+            const field = Object.keys(error.keyValue)[0];
+            res.status(400).json({ message: `${field} existe déjà !` });
+        } else {
+            // Gestion des autres erreurs
+            res.status(500).json({ message: 'Une erreur est survenue !', error: error.message });
+        }
+    }
+}
+
+module.exports = {
+    all_user, 
+    add_user, 
+    user_login, 
+    one_user,
+    delete_user,update_user,
+    one_user_by_tel,
+    one_user_by_type_user,
+    one_user_by_status,
+    create_juste_user
+}
