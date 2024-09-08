@@ -4,6 +4,7 @@ const User = require('../models/User'); // Import the User model
 const Compte = require('../models/Compte'); // Make sure to adjust the path
 const HistoriqueColis = require('../models/historiqueColis');
 const Agence = require('../models/agence');
+const Utilisation = require('../models/utilisation');
 
 
 
@@ -304,39 +305,57 @@ const finish_update_colis = async (req, res) => {
             return res.status(400).json({ message: "Pas assez de crédit pour traiter cette demande." });
         }
 
-        // Decrement the solde of the agency by 1
-        const newSoldeAgence = currentSolde - 1;
+        // Find the latest compte for the given agence
+        const lastCompte = await Compte.findOne({ id_agence: colis.id_agence }).sort({ createdAt: -1 });
 
-        // Update the Agence with the new solde
-        agence.solde = newSoldeAgence.toString(); // Convert back to string if necessary
-        await agence.save();
+        if (lastCompte && lastCompte.typeCompte === 'Using') {
+            // Update the agency's solde
+            const newSoldeAgence = currentSolde - 1;
+            agence.solde = newSoldeAgence.toString(); // Convert back to string if necessary
+            await agence.save();
 
-        // Create a new account with the type 'Using'
-        const newCompte = new Compte({
-            id_agence: colis.id_agence, // Associate with the same agency
-            typeCompte: 'Using',
-            solde: newSoldeAgence.toString(), // Initial solde for the new account
-            montantCompte: '1', // Assuming initial montantCompte is 0, adjust as needed
-            dateCompte: new Date(),
-            // Add other fields if necessary
-        });
+            // Update the last compte's solde
+            const newSoldeCompte = parseFloat(lastCompte.solde) - 1;
+            lastCompte.solde = newSoldeCompte.toString(); // Convert back to string if necessary
+            await lastCompte.save();
 
-        // Save the new account to the database
-        await newCompte.save();
+            // Create a new utilisation entry
+            const newUtilisation = new Utilisation({
+                id_compte: lastCompte._id,
+                id_colis: updated_colis._id,
+                montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
+            });
+            await newUtilisation.save();
 
-        // Create a new history entry
-        const newHistorique = new HistoriqueColis({
-            id_colis: updated_colis._id,
-            id_statut: updated_colis.status
-        });
+        } else {
+            // Create a new compte with type 'Using'
+            const newCompte = new Compte({
+                id_agence: colis.id_agence,
+                typeCompte: 'Using',
+                solde: currentSolde - 1, // Initial solde for the new account
+                montantCompte: '1', // Assuming initial montantCompte is 1, adjust as needed
+                dateCompte: new Date(),
+                // Add other fields if necessary
+            });
 
-        // Save the history entry
-        await newHistorique.save();
+            // Save the new account to the database
+            await newCompte.save();
 
-        console.log(`Le colis a été bien mis à jour. Voici le code du colis `)
+            // Update the agency's solde
+            agence.solde = (currentSolde - 1).toString(); // Convert back to string if necessary
+            await agence.save();
+
+            // Create a new utilisation entry
+            const newUtilisation = new Utilisation({
+                id_compte: newCompte._id,
+                id_colis: updated_colis._id,
+                montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
+            });
+            await newUtilisation.save();
+        }
 
         res.status(200).json({ 
-            message: `Le colis a été bien mis à jour. Voici le code du colis : "${updated_colis.codeColis}"`
+            message: `Le colis a été bien enregistré. Voici le code du colis : "${updated_colis.codeColis}"`
         });
 
     } catch (error) {
