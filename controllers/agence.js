@@ -20,8 +20,8 @@ const all_agence = async (req,res)=>{
 }
 
 const add_agence = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active} = await req.body
-    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active})
+    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde} = await req.body
+    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde})
     
     try {
         const saved_agence = await new_agence.save()
@@ -137,7 +137,6 @@ const get_agences_with_comptes = async (req, res) => {
     }
 };
 
-
 const get_agence_by_destination = async (req, res) => {
     const { id_colis } = req.params; // Get the id_colis from the request parameters
 
@@ -164,7 +163,5 @@ const get_agence_by_destination = async (req, res) => {
         res.status(500).json(error.message);
     }
 };
-
-
 
 module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination}

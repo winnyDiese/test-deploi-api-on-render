@@ -15,7 +15,8 @@ const agenceSchema = new mongoose.Schema({
     adresseAgence: String,
     emailAgence:String,
     logo:String,
-    active: Boolean
+    active: Boolean,
+    solde: Number
 
 },{ timestamps: true })
 
