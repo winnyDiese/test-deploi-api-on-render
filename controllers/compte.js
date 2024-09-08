@@ -104,10 +104,10 @@ const update_and_add_montant_compte_by_agence = async (req, res) => {
             const nouveauMontant = parseFloat(compte.montantCompte) + parseFloat(montantCompte);
 
             // Mettez à jour le montant du compte trouvé
-            compte.montantCompte = nouveauMontant.toString(); // Convertir en chaîne si nécessaire
+            compte.montantCompte = montantCompte; // Convertir en chaîne si nécessaire
             compte.dateCompte = dateCompte; // Mettre à jour les autres champs si nécessaire
-            compte.typeCompte = typeCompte;
-            compte.solde = solde;
+            compte.typeCompte = "Vente";
+            compte.solde = nouveauMontant.toString();
             compte.id_user = id_user;
 
             const updatedCompte = await compte.save();
@@ -118,7 +118,7 @@ const update_and_add_montant_compte_by_agence = async (req, res) => {
                 dateCompte,
                 typeCompte,
                 montantCompte, // Le montant initial est celui reçu
-                solde,
+                solde: montantCompte,
                 id_agence,
                 id_user
             });
