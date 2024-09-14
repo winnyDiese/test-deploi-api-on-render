@@ -538,44 +538,93 @@ const send_my_identity = async (req, res) => {
     }
 }
 
+// const colis_change_status = async (req, res) => {
+//     try {
+//         const { id } = req.params; // Récupère l'ID du colis à partir des paramètres de l'URL
+//         const { status } = req.body; // Récupère le nouveau statut à partir du corps de la requête
+
+//         // Recherche et met à jour le statut du colis
+//         const updated_colis = await Colis.findByIdAndUpdate(
+//             id, 
+//             { status }, // Met à jour uniquement le champ "status"
+//             { new: true } // Retourne le document mis à jour
+//         );
+
+//         // Vérifie si le colis existe
+//         if (!updated_colis) {
+//             return res.status(404).json({ message: 'Colis non trouvé !' });
+//         }
+
+
+
+
+//         // Crée une nouvelle entrée d'historique pour ce changement de statut
+//         const newHistorique = new HistoriqueColis({
+//             id_colis: updated_colis._id,
+//             id_statut: updated_colis.status, // Utilise le nouveau statut
+//             // date: new Date() // Enregistre la date du changement de statut
+//         });
+
+//         // Sauvegarde l'entrée d'historique
+//         await newHistorique.save();
+
+//         // Envoie la réponse avec le colis mis à jour
+//         res.status(200).json({
+//             message: 'Statut du colis mis à jour avec succès !',
+//             colis: updated_colis
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json(error.message);
+//     }
+// }
+
 const colis_change_status = async (req, res) => {
     try {
-        const { id } = req.params; // Récupère l'ID du colis à partir des paramètres de l'URL
-        const { status } = req.body; // Récupère le nouveau statut à partir du corps de la requête
+        const { id } = req.params; // Récupérer l'ID du colis
+        const { status } = req.body; // Récupérer le nouveau statut à partir du corps de la requête
 
-        // Recherche et met à jour le statut du colis
-        const updated_colis = await Colis.findByIdAndUpdate(
-            id, 
-            { status }, // Met à jour uniquement le champ "status"
-            { new: true } // Retourne le document mis à jour
-        );
+        // Statuts autorisés dans l'ordre
+        const validStatusFlow = {
+            demande: "depot",
+            depot: "charge",
+            charge: "en cours",
+            "en cours": "arrive",
+            arrive: "retire",
+        };
 
-        // Vérifie si le colis existe
-        if (!updated_colis) {
-            return res.status(404).json({ message: 'Colis non trouvé !' });
+        // Trouver le colis par ID
+        const existing_colis = await Colis.findById(id);
+
+        if (!existing_colis) return res.status(404).json({ message: "Colis non trouvé !" });
+
+        // Récupérer le statut actuel du colis
+        const currentStatus = existing_colis.status;
+
+        // Vérifier si le statut à mettre à jour est bien le statut suivant autorisé
+        const expectedNextStatus = validStatusFlow[currentStatus];
+
+        if (currentStatus === status) {
+            return res.status(400).json({ message: "Le statut est déjà à jour." });
         }
 
+        // Vérifier que le nouveau statut correspond à celui attendu
+        if (status !== expectedNextStatus) {
+            return res.status(400).json({
+                message: `Statut incorrect. Le prochain statut attendu après '${currentStatus}' est '${expectedNextStatus}'.`,
+            });
+        }
 
-        // Crée une nouvelle entrée d'historique pour ce changement de statut
-        const newHistorique = new HistoriqueColis({
-            id_colis: updated_colis._id,
-            id_statut: updated_colis.status, // Utilise le nouveau statut
-            // date: new Date() // Enregistre la date du changement de statut
-        });
+        // Si le statut est correct, faire la mise à jour
+        existing_colis.status = status;
+        const updated_colis = await existing_colis.save();
 
-        // Sauvegarde l'entrée d'historique
-        await newHistorique.save();
-
-        // Envoie la réponse avec le colis mis à jour
-        res.status(200).json({
-            message: 'Statut du colis mis à jour avec succès !',
-            colis: updated_colis
-        });
+        res.status(200).json({ message: "Statut du colis mis à jour avec succès", colis: updated_colis });
     } catch (error) {
         console.log(error);
         res.status(500).json(error.message);
     }
-}
+};
 
 module.exports = {
     all_colis, 
