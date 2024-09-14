@@ -558,15 +558,15 @@ const send_my_identity = async (req, res) => {
 
 
 
-//         // Crée une nouvelle entrée d'historique pour ce changement de statut
-//         const newHistorique = new HistoriqueColis({
-//             id_colis: updated_colis._id,
-//             id_statut: updated_colis.status, // Utilise le nouveau statut
-//             // date: new Date() // Enregistre la date du changement de statut
-//         });
+        // // Crée une nouvelle entrée d'historique pour ce changement de statut
+        // const newHistorique = new HistoriqueColis({
+        //     id_colis: updated_colis._id,
+        //     id_statut: updated_colis.status, // Utilise le nouveau statut
+        //     // date: new Date() // Enregistre la date du changement de statut
+        // });
 
-//         // Sauvegarde l'entrée d'historique
-//         await newHistorique.save();
+        // // Sauvegarde l'entrée d'historique
+        // await newHistorique.save();
 
 //         // Envoie la réponse avec le colis mis à jour
 //         res.status(200).json({
@@ -618,6 +618,17 @@ const colis_change_status = async (req, res) => {
         // Si le statut est correct, faire la mise à jour
         existing_colis.status = status;
         const updated_colis = await existing_colis.save();
+
+          // Crée une nouvelle entrée d'historique pour ce changement de statut
+        const newHistorique = new HistoriqueColis({
+            id_colis: updated_colis._id,
+            id_statut: updated_colis.status, // Utilise le nouveau statut
+            // date: new Date() // Enregistre la date du changement de statut
+        });
+
+        // Sauvegarde l'entrée d'historique
+        await newHistorique.save();
+
 
         res.status(200).json({ message: "Statut du colis mis à jour avec succès", colis: updated_colis });
     } catch (error) {
