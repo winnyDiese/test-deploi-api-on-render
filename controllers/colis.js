@@ -604,9 +604,9 @@ const colis_change_status = async (req, res) => {
         // Vérifier si le statut à mettre à jour est bien le statut suivant autorisé
         const expectedNextStatus = validStatusFlow[currentStatus];
 
-        if (currentStatus === status) {
-            return res.status(400).json({ message: "Le statut est déjà à jour." });
-        }
+        // if (currentStatus === status) {
+        //     return res.status(400).json({ message: "Le statut est déjà à jour." });
+        // }
 
         // Vérifier que le nouveau statut correspond à celui attendu
         if (status !== expectedNextStatus) {
