@@ -32,7 +32,6 @@ const get_agents_sendango = async (req, res) => {
     }
   };
   
-
 const add_agent_sendango = async (req, res) => {
     const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser,role } = req.body;
   
