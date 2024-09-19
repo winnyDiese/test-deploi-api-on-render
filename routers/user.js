@@ -14,12 +14,14 @@ const {
     one_user_by_status,
     get_beneficiaire,
     get_client,
+    get_agent_agence,
 } = require('../controllers/user')
 
 const router = express.Router()
 
 
 router.get('/user', all_user)
+router.get('/agent-agence', get_agent_agence)
 router.get('/agent-sendango', get_agents_sendango)
 router.get('/client', get_client)
 router.get('/beneficiaire', get_beneficiaire)
