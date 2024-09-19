@@ -380,7 +380,8 @@ const finish_update_colis = async (req, res) => {
         const newUser = new User({
             nomUser,
             phoneUser,
-            adresseUser
+            adresseUser,
+            role:"beneficiaire"
         });
 
         // Sauvegarder le nouvel utilisateur dans la base de données

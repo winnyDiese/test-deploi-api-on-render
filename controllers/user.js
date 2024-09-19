@@ -31,6 +31,40 @@ const get_agents_sendango = async (req, res) => {
       res.status(500).json({ message: "Erreur lors de la récupération des agents Sendango." });
     }
   };
+
+const get_client = async (req, res) => {
+    try {
+        // Recherche des utilisateurs ayant le rôle 'agent_sendango'
+        const agents = await User.find({ role: "client" }).sort({ _id: -1 });
+
+        // Vérification si des agents ont été trouvés
+        if (agents.length === 0) {
+        return res.status(404).json({ message: "Aucun agent Sendango trouvé." });
+        }
+
+        res.status(200).json(agents);  // Retourne la liste des agents trouvés
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur lors de la récupération des agents Sendango." });
+    }
+};
+
+const get_beneficiaire = async (req, res) => {
+    try {
+        // Recherche des utilisateurs ayant le rôle 'agent_sendango'
+        const agents = await User.find({ role: "beneficiaire" }).sort({ _id: -1 });
+
+        // Vérification si des agents ont été trouvés
+        if (agents.length === 0) {
+        return res.status(404).json({ message: "Aucun agent Sendango trouvé." });
+        }
+
+        res.status(200).json(agents);  // Retourne la liste des agents trouvés
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur lors de la récupération des agents Sendango." });
+    }
+};
   
 const add_agent_sendango = async (req, res) => {
     const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser,role } = req.body;
@@ -305,6 +339,8 @@ const create_juste_user = async (req, res) => {
 
 module.exports = {
     all_user, 
+    get_client,
+    get_beneficiaire,
     get_agents_sendango,
     add_agent_sendango,
     add_user, 
