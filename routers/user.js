@@ -31,7 +31,6 @@ router.post('/new-agent-sendango', add_agent_sendango)
 router.delete('/user/:id', delete_user)
 router.put('/user/:id', update_user)
 
-router.get('/user/:id', one_user)
 router.get('/user/tel/:tel', one_user_by_tel)
 router.get('/user/type/:type', one_user_by_type_user)
 router.get('/user/status/:status', one_user_by_status)
@@ -39,5 +38,7 @@ router.get('/user/status/:status', one_user_by_status)
 // Login
 router.post('/user/login', login)
 router.post('/user/logout', logout)
+
+router.get('/user/:id', one_user)
 
 module.exports = router   

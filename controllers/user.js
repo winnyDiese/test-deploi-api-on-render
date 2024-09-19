@@ -1,5 +1,6 @@
 
 
+const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const User = require('../models/user')
 const UserExtension = require('../models/userExtension')
@@ -353,7 +354,7 @@ const login = async (req,res)=>{
         const authToken = await user.generateAuthToken()
         
         // Répondre avec le token et les informations de l'utilisateur
-        res.status(200).json({ sec, authToken })
+        res.status(200).json({ user, authToken })
 
     } catch (error) {
         console.log(error)
@@ -386,6 +387,22 @@ const logout = async (req, res) => {
     }
 
 };
+
+
+const me = async (req, res) => {
+    try {
+        // Les informations de l'utilisateur sont disponibles dans req.sec grâce au middleware d'authentification
+        const user = req.user;
+
+        // Vous pouvez choisir quelles informations renvoyer
+        res.status(200).json(user);
+
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
 
 module.exports = {
     all_user, 
