@@ -361,6 +361,32 @@ const login = async (req,res)=>{
     }
 }
 
+const logout = async (req, res) => {
+
+    try {
+       
+        if (!req.user) {
+            return res.status(400).json({ message: "Utilisateur non trouvé" });
+        }
+
+        if (!req.user.authTokens) {
+            return res.status(400).json({ message: "Token non trouvé" });
+        }
+
+        req.user.authTokens = req.user.authTokens.filter((authToken)=>{
+            return authToken.authToken !== req.authToken
+        })
+
+        await req.user.save()
+        res.send()
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+
+};
+
 module.exports = {
     all_user, 
     get_client,
@@ -370,6 +396,7 @@ module.exports = {
     add_agent_sendango,
     add_user, 
     login, 
+    logout, 
     one_user,
     delete_user,update_user,
     one_user_by_tel,

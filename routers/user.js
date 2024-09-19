@@ -6,7 +6,7 @@ const {
     get_agents_sendango, 
     add_user, 
     one_user, 
-    user_login, 
+    login, 
     delete_user,
     update_user,
     one_user_by_tel,
@@ -36,6 +36,6 @@ router.get('/user/type/:type', one_user_by_type_user)
 router.get('/user/status/:status', one_user_by_status)
 
 // Login
-router.post('/user/login', user_login)
+router.post('/user/login', login)
 
 module.exports = router   
