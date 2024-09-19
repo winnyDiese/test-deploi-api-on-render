@@ -66,6 +66,23 @@ const get_beneficiaire = async (req, res) => {
     }
 };
   
+const get_agent_agence = async (req, res) => {
+    try {
+        // Recherche des utilisateurs ayant le rôle 'agent_sendango'
+        const agents = await User.find({ role: "agent_agence" }).sort({ _id: -1 });
+
+        // Vérification si des agents ont été trouvés
+        if (agents.length === 0) {
+        return res.status(404).json({ message: "Aucun agent Sendango trouvé." });
+        }
+
+        res.status(200).json(agents);  // Retourne la liste des agents trouvés
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur lors de la récupération des agents Sendango." });
+    }
+};
+  
 const add_agent_sendango = async (req, res) => {
     const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser,role } = req.body;
   
@@ -106,7 +123,8 @@ const add_user = async (req, res) => {
         id_typeUser,
         id_ville,
         statutUser,
-        id_extension
+        id_extension,
+        role
     } = req.body;
 
     try {
@@ -129,7 +147,8 @@ const add_user = async (req, res) => {
             sexe,
             id_typeUser,
             id_ville,
-            statutUser
+            statutUser,
+            role
         });
 
         console.log('data user : '+new_user)
@@ -342,6 +361,7 @@ module.exports = {
     get_client,
     get_beneficiaire,
     get_agents_sendango,
+    get_agent_agence,
     add_agent_sendango,
     add_user, 
     user_login, 
