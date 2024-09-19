@@ -18,22 +18,22 @@ const authentification = async (req,res,next) => {
 
         
         const decodedToken = jwt.verify(authToken, 'foo')
-        const sec = await Secretaire.findOne({
+        const user = await User.findOne({
             _id: decodedToken._id, 
             'authTokens.authToken': authToken
         })
 
          // Vérifier si le token existe dans l'utilisateur
-         const tokenExists = sec?.authTokens.some(tokenObj => tokenObj.authToken === authToken)
+         const tokenExists = user?.authTokens.some(tokenObj => tokenObj.authToken === authToken)
          if (!tokenExists) throw new Error('Token non valide ou expiré')
         
-         if(!sec) throw new Error('Utilisateur non trouvé ou non authentifié')
+         if(!user) throw new Error('Utilisateur non trouvé ou non authentifié')
  
          // Vérifiez quels tokens sont stockés pour cet utilisateur
-         // console.log('Tokens stockés:', sec?.authTokens);
+         // console.log('Tokens stockés:', user?.authTokens);
 
          req.authToken = authToken;
-        req.sec = sec;
+        req.user = user;
 
         next()
 

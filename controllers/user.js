@@ -388,7 +388,6 @@ const logout = async (req, res) => {
 
 };
 
-
 const me = async (req, res) => {
     try {
         // Les informations de l'utilisateur sont disponibles dans req.sec grâce au middleware d'authentification
@@ -405,6 +404,7 @@ const me = async (req, res) => {
 
 
 module.exports = {
+    me,
     all_user, 
     get_client,
     get_beneficiaire,

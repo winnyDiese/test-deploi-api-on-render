@@ -1,6 +1,7 @@
 
 const express = require('express')
 const { 
+    me,
     all_user, 
     add_agent_sendango, 
     get_agents_sendango, 
@@ -17,6 +18,7 @@ const {
     get_client,
     get_agent_agence,
 } = require('../controllers/user')
+const authentification = require('../middkewares/authentification')
 
 const router = express.Router()
 
@@ -31,6 +33,7 @@ router.post('/new-agent-sendango', add_agent_sendango)
 router.delete('/user/:id', delete_user)
 router.put('/user/:id', update_user)
 
+router.get('/user/me', authentification, me)
 router.get('/user/tel/:tel', one_user_by_tel)
 router.get('/user/type/:type', one_user_by_type_user)
 router.get('/user/status/:status', one_user_by_status)
