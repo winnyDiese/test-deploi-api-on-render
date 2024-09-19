@@ -15,6 +15,33 @@ const all_user = async (req,res)=>{
     }
 }
 
+const add_agent_sendango = async (req, res) => {
+    const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser } = req.body;
+  
+    // Création d'un nouvel utilisateur basé sur les données reçues
+    const newUser = new User({
+      nomUser,
+      fonctionAgent,
+      phoneUser,
+      passwordUser,
+      emailUser,
+      adresseUser,
+      sexe,
+      id_typeUser,
+      id_ville,
+      statutUser
+    });
+  
+    try {
+      // Sauvegarde du nouvel utilisateur dans la base de données
+      const savedUser = await newUser.save();
+      res.status(201).json(savedUser);  // Retourne l'utilisateur ajouté avec un statut de succès
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Erreur lors de l'ajout de l'utilisateur." });
+    }
+  };
+
 const add_user = async (req, res) => {
     const {
         nomUser,
@@ -260,6 +287,7 @@ const create_juste_user = async (req, res) => {
 
 module.exports = {
     all_user, 
+    add_agent_sendango,
     add_user, 
     user_login, 
     one_user,

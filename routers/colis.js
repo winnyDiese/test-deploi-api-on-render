@@ -13,7 +13,6 @@ router.put('/colis/finish-send/:id', finish_update_colis)
 router.put('/colis/change-status/:id', colis_change_status)
 router.put('/colis/:id', update_colis)
 
-
 router.get('/colis/:id', one_colis)
 router.get('/colis/code/:codeColis', colis_bycode)
 router.get('/colis/user-a/:id', colis_byuser_a)
