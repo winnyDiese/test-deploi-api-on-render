@@ -185,23 +185,6 @@ const add_user = async (req, res) => {
     }
 }
 
-const user_login = async (req,res)=>{
-    const {phoneUser, passwordUser} = await req.body
-
-    try {
-        const user = await User.findOne({phoneUser,passwordUser})
-        if(!user) res.status(401).send('Mot de passe ou numéro de télephone non valide...')
-
-        const authToken = await user.generateAuthToken()
-        
-        // Répondre avec le token et les informations de l'utilisateur
-        res.status(200).json({ sec, authToken })
-        
-    } catch (error) {
-        console.log(error)
-        res.status(500).send('Erreur de mot de passe...')
-    }
-}
 
 const delete_user = async (req,res) => {
     const { id } = req.params;
@@ -360,6 +343,24 @@ const create_juste_user = async (req, res) => {
     }
 }
 
+const login = async (req,res)=>{
+    const {phoneUser, passwordUser} = await req.body
+
+    try {
+        const user = await User.findOne({phoneUser,passwordUser})
+        if(!user) res.status(401).send('Mot de passe ou numéro de télephone non valide...')
+
+        const authToken = await user.generateAuthToken()
+        
+        // Répondre avec le token et les informations de l'utilisateur
+        res.status(200).json({ sec, authToken })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Erreur de mot de passe...')
+    }
+}
+
 module.exports = {
     all_user, 
     get_client,
@@ -368,7 +369,7 @@ module.exports = {
     get_agent_agence,
     add_agent_sendango,
     add_user, 
-    user_login, 
+    login, 
     one_user,
     delete_user,update_user,
     one_user_by_tel,
