@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     sexe:String,
     id_typeUser:String,
     id_ville:String,
-    statutUser:String
+    statutUser:String,
+    role:String
     
 },{timestamps:true})
 

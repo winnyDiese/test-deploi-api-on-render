@@ -15,8 +15,26 @@ const all_user = async (req,res)=>{
     }
 }
 
+const get_agents_sendango = async (req, res) => {
+    try {
+      // Recherche des utilisateurs ayant le rôle 'agent_sendango'
+      const agents = await User.find({ role: "agent_sendango" }).sort({ _id: -1 });
+  
+      // Vérification si des agents ont été trouvés
+      if (agents.length === 0) {
+        return res.status(404).json({ message: "Aucun agent Sendango trouvé." });
+      }
+  
+      res.status(200).json(agents);  // Retourne la liste des agents trouvés
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Erreur lors de la récupération des agents Sendango." });
+    }
+  };
+  
+
 const add_agent_sendango = async (req, res) => {
-    const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser } = req.body;
+    const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser,role } = req.body;
   
     // Création d'un nouvel utilisateur basé sur les données reçues
     const newUser = new User({
@@ -29,7 +47,8 @@ const add_agent_sendango = async (req, res) => {
       sexe,
       id_typeUser,
       id_ville,
-      statutUser
+      statutUser,
+      role
     });
   
     try {
@@ -287,6 +306,7 @@ const create_juste_user = async (req, res) => {
 
 module.exports = {
     all_user, 
+    get_agents_sendango,
     add_agent_sendango,
     add_user, 
     user_login, 
