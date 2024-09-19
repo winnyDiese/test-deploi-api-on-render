@@ -310,11 +310,15 @@ const finish_update_colis = async (req, res) => {
         const lastCompte = await Compte.findOne({ id_agence: colis.id_agence }).sort({ createdAt: -1 });
 
         if (lastCompte && lastCompte.typeCompte === 'Using') {
+
             // Mettre à jour le solde de l'agence
             const newSoldeAgence = currentSolde - 1;
+            
             agence.solde = newSoldeAgence.toString(); // Conversion en string si nécessaire
             await agence.save();
 
+            // Mettre à jour le montant compte
+            lastCompte.montantCompte = parseFloat(lastCompte.montantCompte) + 1;
             // Mettre à jour le solde du dernier compte
             const newSoldeCompte = parseFloat(lastCompte.solde) - 1;
             lastCompte.solde = newSoldeCompte.toString(); // Conversion en string si nécessaire
