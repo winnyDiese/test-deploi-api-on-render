@@ -510,7 +510,8 @@ const send_my_identity = async (req, res) => {
         const newUser = new User({
             nomUser,
             phoneUser,
-            adresseUser
+            adresseUser,
+            role:"client"
         });
 
         // Sauvegarder le nouvel utilisateur dans la base de données
