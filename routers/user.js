@@ -7,6 +7,7 @@ const {
     add_user, 
     one_user, 
     login, 
+    logout, 
     delete_user,
     update_user,
     one_user_by_tel,
@@ -37,5 +38,6 @@ router.get('/user/status/:status', one_user_by_status)
 
 // Login
 router.post('/user/login', login)
+router.post('/user/logout', logout)
 
 module.exports = router   
