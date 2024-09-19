@@ -248,122 +248,6 @@ const update_colis_my_data = async (req, res) => {
     }
 };
 
-// const finish_update_colis = async (req, res) => {
-//     try {
-//         const { id } = req.params; // Get the Colis ID from the request parameters
-
-//         // Check if the Colis exists
-//         const colis = await Colis.findById(id);
-//         if (!colis) {
-//             return res.status(404).json({ message: "Colis non trouvé !" });
-//         }
-
-//         const { nomUser, phoneUser, adresseUser } = req.body; // Extract user data from the request body
-
-//         // Create a new user with the provided information
-//         const newUser = new User({
-//             nomUser,
-//             phoneUser,
-//             adresseUser
-//         });
-
-//         // Save the new user to the database
-//         const savedUser = await newUser.save();
-
-//         // Generate a random codeColis with 15 alphanumeric characters
-//         const generateCodeColis = () => {
-//             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//             let code = '';
-//             for (let i = 0; i < 15; i++) {
-//                 const randomIndex = Math.floor(Math.random() * characters.length);
-//                 code += characters[randomIndex];
-//             }
-//             return code;
-//         };
-
-//         const codeColis = generateCodeColis();
-
-//         // Prepare the update object with the new user's ID
-//         const updates = {
-//             id_userB: savedUser._id,
-//             codeColis,
-//             completed: true
-//         };
-
-//         // Update the existing Colis with the new user ID
-//         const updated_colis = await Colis.findByIdAndUpdate(id, updates, { new: true });
-
-//         // Find the agency associated with the Colis
-//         const agence = await Agence.findById(colis.id_agence);
-//         if (!agence) {
-//             return res.status(404).json({ message: "Agence non trouvée pour le colis spécifié !" });
-//         }
-
-//         // Check if the solde exists and is greater than 0
-//         const currentSolde = parseFloat(agence.solde) || 0; // Default to 0 if solde is not defined
-//         if (currentSolde <= 0) {
-//             return res.status(400).json({ message: "Pas assez de crédit pour traiter cette demande." });
-//         }
-
-//         // Find the latest compte for the given agence
-//         const lastCompte = await Compte.findOne({ id_agence: colis.id_agence }).sort({ createdAt: -1 });
-
-//         if (lastCompte && lastCompte.typeCompte === 'Using') {
-//             // Update the agency's solde
-//             const newSoldeAgence = currentSolde - 1;
-//             agence.solde = newSoldeAgence.toString(); // Convert back to string if necessary
-//             await agence.save();
-
-//             // Update the last compte's solde
-//             const newSoldeCompte = parseFloat(lastCompte.solde) - 1;
-//             lastCompte.solde = newSoldeCompte.toString(); // Convert back to string if necessary
-//             await lastCompte.save();
-
-//             // Create a new utilisation entry
-//             const newUtilisation = new Utilisation({
-//                 id_compte: lastCompte._id,
-//                 id_colis: updated_colis._id,
-//                 montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
-//             });
-//             await newUtilisation.save();
-
-//         } else {
-//             // Create a new compte with type 'Using'
-//             const newCompte = new Compte({
-//                 id_agence: colis.id_agence,
-//                 typeCompte: 'Using',
-//                 solde: currentSolde - 1, // Initial solde for the new account
-//                 montantCompte: '1', // Assuming initial montantCompte is 1, adjust as needed
-//                 dateCompte: new Date(),
-//                 // Add other fields if necessary
-//             });
-
-//             // Save the new account to the database
-//             await newCompte.save();
-
-//             // Update the agency's solde
-//             agence.solde = (currentSolde - 1).toString(); // Convert back to string if necessary
-//             await agence.save();
-
-//             // Create a new utilisation entry
-//             const newUtilisation = new Utilisation({
-//                 id_compte: newCompte._id,
-//                 id_colis: updated_colis._id,
-//                 montantRetire: '1' // Assuming montantRetire is 1, adjust as needed
-//             });
-//             await newUtilisation.save();
-//         }
-
-//         res.status(200).json({ 
-//             message: `Le colis a été bien enregistré. Voici le code du colis : "${updated_colis.codeColis}"`
-//         });
-
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
 
 const finish_update_colis = async (req, res) => {
     try {
@@ -639,6 +523,40 @@ const colis_change_status = async (req, res) => {
     }
 };
 
+
+const countColisByStatus = async (req, res) => {
+    try {
+      // Compter le nombre de colis pour chaque statut
+      const statusCounts = await Promise.all([
+        Colis.countDocuments({ status: "demande" }),
+        Colis.countDocuments({ status: "depot" }),
+        Colis.countDocuments({ status: "charge" }),
+        Colis.countDocuments({ status: "en cours" }),
+        Colis.countDocuments({ status: "arrive" }),
+        Colis.countDocuments({ status: "retire" }),
+        Colis.countDocuments({}),
+
+      ]);
+  
+      // Préparer un objet contenant les comptes de chaque statut
+      const result = {
+        demande: statusCounts[0],
+        depot: statusCounts[1],
+        charge: statusCounts[2],
+        enCours: statusCounts[3],
+        arrive: statusCounts[4],
+        retire: statusCounts[5],
+        all_colis: statusCounts[6],
+      };
+  
+      res.status(200).json(result); // Retourne l'objet avec les comptes
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Erreur lors de la récupération des données." });
+    }
+};
+  
+
 module.exports = {
     all_colis, 
     add_colis,
@@ -651,6 +569,7 @@ module.exports = {
     update_colis_my_data,
     finish_update_colis,
     send_my_identity,
-    colis_change_status
+    colis_change_status,
+    countColisByStatus
 }
 
