@@ -186,7 +186,6 @@ const add_user = async (req, res) => {
     }
 }
 
-
 const delete_user = async (req,res) => {
     const { id } = req.params;
     try {
