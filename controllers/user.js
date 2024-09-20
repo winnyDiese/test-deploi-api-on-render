@@ -401,6 +401,44 @@ const me = async (req, res) => {
     }
 }
 
+const new_user = async (req, res) => {
+    const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser, role } = req.body;
+  
+    try {
+      // Creating a new instance of User
+      const newUser = new User({
+        nomUser,
+        fonctionAgent,
+        phoneUser,
+        passwordUser,
+        emailUser,
+        adresseUser,
+        sexe,
+        id_typeUser,
+        id_ville,
+        statutUser,
+        role,
+      });
+  
+      // Saving the new user to the database
+      await newUser.save();
+  
+      // Sending success response with the created user
+      res.status(201).json(newUser);
+    } catch (error) {
+      console.error(error);
+      
+      // Sending error response
+      if (error.code === 11000) {
+        // Duplicate error (e.g., duplicate phoneUser)
+        return res.status(400).send('User with this phone number already exists!');
+      }
+  
+      res.status(500).send('An error occurred while adding the new user.');
+    }
+  };
+  
+
 
 module.exports = {
     me,
@@ -418,5 +456,6 @@ module.exports = {
     one_user_by_tel,
     one_user_by_type_user,
     one_user_by_status,
-    create_juste_user
+    create_juste_user,
+    new_user
 }
