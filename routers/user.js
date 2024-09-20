@@ -17,6 +17,7 @@ const {
     get_beneficiaire,
     get_client,
     get_agent_agence,
+    new_user
 } = require('../controllers/user')
 const authentification = require('../middkewares/authentification')
 
@@ -28,6 +29,7 @@ router.get('/agent-agence', get_agent_agence)
 router.get('/agent-sendango', get_agents_sendango)
 router.get('/client', get_client)
 router.get('/beneficiaire', get_beneficiaire)
+router.post('/user/new', new_user)
 router.post('/user', add_user)
 router.post('/new-agent-sendango', add_agent_sendango)
 router.delete('/user/:id', delete_user)
