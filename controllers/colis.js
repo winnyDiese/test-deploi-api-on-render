@@ -598,6 +598,43 @@ const countColisByStatusForUser = async (req, res) => {
     }
 };
   
+const countColisByStatusForAgence = async (req, res) => {
+    const { id_agence } = req.params; // Récupérer l'ID de l'agence depuis les paramètres de la requête
+  
+    try {
+      // Vérifier si l'ID de l'agence est fourni
+      if (!id_agence) {
+        return res.status(400).json({ message: "L'ID de l'agence est requis." });
+      }
+  
+      // Compter le nombre de colis pour chaque statut spécifique à l'agence
+      const statusCounts = await Promise.all([
+        Colis.countDocuments({ status: "demande", id_agence }),
+        Colis.countDocuments({ status: "depot", id_agence }),
+        Colis.countDocuments({ status: "charge", id_agence }),
+        Colis.countDocuments({ status: "en cours", id_agence }),
+        Colis.countDocuments({ status: "arrive", id_agence }),
+        Colis.countDocuments({ status: "retire", id_agence }),
+        Colis.countDocuments({ id_agence }), // Compte tous les colis de cette agence
+      ]);
+  
+      // Préparer un objet contenant les comptes de chaque statut
+      const result = {
+        demande: statusCounts[0],
+        depot: statusCounts[1],
+        charge: statusCounts[2],
+        enCours: statusCounts[3],
+        arrive: statusCounts[4],
+        retire: statusCounts[5],
+        all_colis: statusCounts[6],
+      };
+  
+      res.status(200).json(result); // Retourne l'objet avec les comptes
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Erreur lors de la récupération des données." });
+    }
+  };
   
 
 module.exports = {
@@ -614,6 +651,7 @@ module.exports = {
     send_my_identity,
     colis_change_status,
     countColisByStatus,
-    countColisByStatusForUser
+    countColisByStatusForUser,
+    countColisByStatusForAgence
 }
 
