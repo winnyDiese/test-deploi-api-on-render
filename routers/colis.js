@@ -1,6 +1,6 @@
 
 const express = require('express')
-const { countColisByStatus, all_colis, add_colis,one_colis,delete_colis,update_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data, finish_update_colis, send_my_identity, colis_change_status } = require('../controllers/colis')
+const { countColisByStatus, all_colis, add_colis,one_colis,delete_colis,update_colis,colis_bycode,colis_byuser_a,colis_byuser_b, update_colis_my_data, finish_update_colis, send_my_identity, colis_change_status, countColisByStatusForUser, countColisByStatusForAgence } = require('../controllers/colis')
 const router = express.Router()
 
 router.get('/colis', all_colis)
@@ -17,6 +17,8 @@ router.get('/colis/code/:codeColis', colis_bycode)
 router.get('/colis/user-a/:id', colis_byuser_a)
 router.get('/colis/user-b/:id', colis_byuser_b)
 router.get('/colis/dashboard', countColisByStatus)
+router.get('/colis/dashboard-client/:id', countColisByStatusForUser)
+router.get('/colis/dashboard-agence/:id_agence', countColisByStatusForAgence)
 router.get('/colis/:id', one_colis)
 
 module.exports = router
