@@ -559,6 +559,45 @@ const countColisByStatus = async (req, res) => {
       res.status(500).json({ message: "Erreur lors de la récupération des données." });
     }
 };
+
+const countColisByStatusForUser = async (req, res) => {
+    const { id } = req.params; // Récupérer l'ID depuis les paramètres de la requête
+  
+    try {
+      // Vérifier si l'ID est fourni
+      if (!id) {
+        return res.status(400).json({ message: "L'ID utilisateur est requis." });
+      }
+  
+      // Compter le nombre de colis pour chaque statut spécifique à l'utilisateur
+      const statusCounts = await Promise.all([
+        Colis.countDocuments({ status: "demande", id_userA: id }),
+        Colis.countDocuments({ status: "depot", id_userA: id }),
+        Colis.countDocuments({ status: "charge", id_userA: id }),
+        Colis.countDocuments({ status: "en cours", id_userA: id }),
+        Colis.countDocuments({ status: "arrive", id_userA: id }),
+        Colis.countDocuments({ status: "retire", id_userA: id }),
+        Colis.countDocuments({ id_userA: id }), // Compte tous les colis de cet utilisateur
+      ]);
+  
+      // Préparer un objet contenant les comptes de chaque statut
+      const result = {
+        demande: statusCounts[0],
+        depot: statusCounts[1],
+        charge: statusCounts[2],
+        enCours: statusCounts[3],
+        arrive: statusCounts[4],
+        retire: statusCounts[5],
+        all_colis: statusCounts[6],
+      };
+  
+      res.status(200).json(result); // Retourne l'objet avec les comptes
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Erreur lors de la récupération des données." });
+    }
+};
+  
   
 
 module.exports = {
@@ -574,6 +613,7 @@ module.exports = {
     finish_update_colis,
     send_my_identity,
     colis_change_status,
-    countColisByStatus
+    countColisByStatus,
+    countColisByStatusForUser
 }
 
