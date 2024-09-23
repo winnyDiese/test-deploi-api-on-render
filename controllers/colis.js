@@ -7,7 +7,6 @@ const Agence = require('../models/agence');
 const Utilisation = require('../models/utilisation');
 
 
-
 const all_colis = async (req,res)=>{
     try {
 
@@ -248,7 +247,6 @@ const update_colis_my_data = async (req, res) => {
     }
 };
 
-
 const finish_update_colis = async (req, res) => {
     try {
         const { id } = req.params; // Récupère l'ID du colis depuis les paramètres de la requête
@@ -381,7 +379,6 @@ const finish_update_colis = async (req, res) => {
     }
 };
 
-
 const send_my_identity = async (req, res) => {
     try {
         const { id } = req.params; // Récupérer l'ID du colis à partir des paramètres de la requête
@@ -427,47 +424,6 @@ const send_my_identity = async (req, res) => {
         res.status(500).json({ message: "Une erreur est survenue lors du traitement de la demande.", error: error.message });
     }
 }
-
-// const colis_change_status = async (req, res) => {
-//     try {
-//         const { id } = req.params; // Récupère l'ID du colis à partir des paramètres de l'URL
-//         const { status } = req.body; // Récupère le nouveau statut à partir du corps de la requête
-
-//         // Recherche et met à jour le statut du colis
-//         const updated_colis = await Colis.findByIdAndUpdate(
-//             id, 
-//             { status }, // Met à jour uniquement le champ "status"
-//             { new: true } // Retourne le document mis à jour
-//         );
-
-//         // Vérifie si le colis existe
-//         if (!updated_colis) {
-//             return res.status(404).json({ message: 'Colis non trouvé !' });
-//         }
-
-
-
-
-        // // Crée une nouvelle entrée d'historique pour ce changement de statut
-        // const newHistorique = new HistoriqueColis({
-        //     id_colis: updated_colis._id,
-        //     id_statut: updated_colis.status, // Utilise le nouveau statut
-        //     // date: new Date() // Enregistre la date du changement de statut
-        // });
-
-        // // Sauvegarde l'entrée d'historique
-        // await newHistorique.save();
-
-//         // Envoie la réponse avec le colis mis à jour
-//         res.status(200).json({
-//             message: 'Statut du colis mis à jour avec succès !',
-//             colis: updated_colis
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json(error.message);
-//     }
-// }
 
 const colis_change_status = async (req, res) => {
     try {
@@ -634,6 +590,38 @@ const countColisByStatusForAgence = async (req, res) => {
       res.status(500).json({ message: "Erreur lors de la récupération des données." });
     }
   };
+
+const colisByClient = async (req, res) => {
+    try {
+      const { id } = req.params; // Récupérer l'ID de l'utilisateur depuis les paramètres
+  
+      // Rechercher les colis associés à id_userA (l'ID reçu en paramètre)
+      const colis = await Colis.find({ id_userA: id, completed: true })
+        .populate('id_userA')
+        .populate('id_userB')
+        .populate('id_agence')
+        .populate({
+          path: 'id_destination',  // Populate the id_destination field
+          populate: [
+            { path: 'id_villeA' },  // Nested populate for id_villeA within id_destination
+            { path: 'id_villeB' }   // Nested populate for id_villeB within id_destination
+          ]
+        })
+        .sort({ createdAt: -1 }); // Trier par date de création (descendant)
+  
+      // Vérifier si des colis ont été trouvés
+      if (!colis || colis.length === 0) {
+        return res.status(404).json({ message: 'Aucun colis trouvé pour cet utilisateur' });
+      }
+  
+      // Retourner les colis trouvés
+      res.status(200).json(colis);
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).send('Une erreur est survenue lors de la récupération des colis.');
+    }
+};
   
 
 module.exports = {
@@ -651,6 +639,7 @@ module.exports = {
     colis_change_status,
     countColisByStatus,
     countColisByStatusForUser,
-    countColisByStatusForAgence
+    countColisByStatusForAgence,
+    colisByClient
 }
 
