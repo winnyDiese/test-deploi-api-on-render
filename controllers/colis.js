@@ -527,7 +527,6 @@ const colis_change_status = async (req, res) => {
     }
 };
 
-
 const countColisByStatus = async (req, res) => {
     try {
       // Compter le nombre de colis pour chaque statut
