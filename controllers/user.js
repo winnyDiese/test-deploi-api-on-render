@@ -348,7 +348,7 @@ const login = async (req,res)=>{
 
     try {
         const user = await User.findOne({phoneUser,passwordUser})
-        if(!user) res.status(401).send('Mot de passe ou numéro de télephone non valide...')
+        if(!user) return res.status(401).send('Mot de passe ou numéro de télephone non valide...')
 
         const authToken = await user.generateAuthToken()
         
