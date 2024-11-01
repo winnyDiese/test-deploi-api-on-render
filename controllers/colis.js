@@ -80,36 +80,41 @@ const add_colis = async (req,res)=>{
 }
 
 const new_colis = async (req, res) => {
-    const { ville_A, ville_B, completed, status } = await req.body;
+    const { id_villeA, id_villeB, completed, status } = req.body;
 
     try {
-        // Conversion de ville_A et ville_B en ObjectId pour comparaison correcte
-        const villeAObjectId = new mongoose.Types.ObjectId(ville_A);
-        const villeBObjectId = new mongoose.Types.ObjectId(ville_B);
+        // // Vérifiez si ville_A et ville_B sont des ObjectIds valides
+        // if (!mongoose.Types.ObjectId.isValid(ville_A) || !mongoose.Types.ObjectId.isValid(ville_B)) {
+        //     return res.status(400).json({ message: 'Identifiant de ville invalide.' });
+        // }
+
+        // // Conversion de ville_A et ville_B en ObjectId pour une comparaison correcte
+        // const villeAObjectId = new mongoose.Types.ObjectId(ville_A);
+        // const villeBObjectId = new mongoose.Types.ObjectId(ville_B);
 
         // Recherche d'une destination correspondant à ville_A et ville_B
         const destination = await Destination.findOne({
-            id_villeA: villeAObjectId,
-            id_villeB: villeBObjectId
-        });
+            id_villeA: id_villeA,
+            id_villeB: id_villeB
+        }).populate('id_villeA').populate('id_villeB');
 
         if (!destination) {
             return res.status(404).json({ message: 'Cette destination n\'existe pas.' });
         }
 
         // Création d'un nouveau colis avec les informations fournies et l'id de destination
-        const newColis = new Colis({
-            id_destination: destination._id,
-            status,
-            completed
-        });
+        // const newColis = new Colis({
+        //     id_destination: destination._id,
+        //     status,
+        //     completed
+        // });
 
-        const savedColis = await newColis.save();
-        res.status(201).json(savedColis);
+        // const savedColis = await newColis.save();
+        res.status(201).json("Good job !");
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json(error.message);
+        console.error(error);
+        res.status(500).json({ message: error.message });
     }
 };
 
