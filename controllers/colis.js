@@ -672,6 +672,7 @@ module.exports = {
     countColisByStatus,
     countColisByStatusForUser,
     countColisByStatusForAgence,
-    colisByClient
+    colisByClient,
+    new_colis
 }
 
