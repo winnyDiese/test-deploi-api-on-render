@@ -83,15 +83,7 @@ const new_colis = async (req, res) => {
     const { id_villeA, id_villeB, completed, status } = req.body;
 
     try {
-        // // Vérifiez si ville_A et ville_B sont des ObjectIds valides
-        // if (!mongoose.Types.ObjectId.isValid(ville_A) || !mongoose.Types.ObjectId.isValid(ville_B)) {
-        //     return res.status(400).json({ message: 'Identifiant de ville invalide.' });
-        // }
-
-        // // Conversion de ville_A et ville_B en ObjectId pour une comparaison correcte
-        // const villeAObjectId = new mongoose.Types.ObjectId(ville_A);
-        // const villeBObjectId = new mongoose.Types.ObjectId(ville_B);
-
+       
         // Recherche d'une destination correspondant à ville_A et ville_B
         const destination = await Destination.findOne({
             id_villeA: id_villeA,
@@ -103,21 +95,22 @@ const new_colis = async (req, res) => {
         }
 
         // Création d'un nouveau colis avec les informations fournies et l'id de destination
-        // const newColis = new Colis({
-        //     id_destination: destination._id,
-        //     status,
-        //     completed
-        // });
+        const newColis = new Colis({
+            id_destination: destination._id,
+            status,
+            completed
+        });
 
-        // const savedColis = await newColis.save();
-        res.status(201).json("Good job !");
+        const savedColis = await newColis.save();
+        console.log('Colis created succeffully !')
+        return res.status(201).json({message:'Colis created succeffully !', colis: savedColis});
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
-};
 
+};
 
 const delete_colis = async (req,res) => {
     const { id } = req.params;
