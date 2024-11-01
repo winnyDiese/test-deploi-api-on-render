@@ -108,11 +108,22 @@ const new_colis = async (req, res) => {
             return res.status(404).json({ message: 'Cette destination n\'existe pas.' });
         }
 
+        
+        
+        // names,
+        // tel,
+        // adresse
+
         // Création d'un nouveau colis avec les informations fournies et l'id de destination
         const newColis = new Colis({
             id_destination: destination._id,
             status,
-            completed
+            completed,
+
+            poids,
+            contenus,
+            valeur,
+
         });
 
         const savedColis = await newColis.save();
