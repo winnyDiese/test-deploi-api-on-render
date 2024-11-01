@@ -77,6 +77,41 @@ const add_colis = async (req,res)=>{
     }
 }
 
+const new_colis = async (req,res)=>{
+    const {
+        ville_A ,
+        ville_B ,
+        completed,
+        status
+    } = await req.body 
+    
+    const new_colis = new Colis({
+        codeColis,
+        poids,
+        contenu,
+        valeur,
+        source,
+        id_userA,
+        id_userB,
+        id_extensionA,
+        id_extensionB,
+        id_destination,
+        completed,
+        status,
+        id_tarif,
+
+        id_agence
+    })
+
+    try {
+        const saved_colis = await new_colis.save()
+        res.status(201).json(saved_colis)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+}
+
 const delete_colis = async (req,res) => {
     const { id } = req.params;
     try {
