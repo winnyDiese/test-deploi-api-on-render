@@ -6,6 +6,7 @@ const HistoriqueColis = require('../models/historiqueColis');
 const Agence = require('../models/agence');
 const Utilisation = require('../models/utilisation');
 const Destination = require('../models/destination');
+const { default: mongoose } = require('mongoose');
 
 
 const all_colis = async (req,res)=>{
@@ -82,10 +83,14 @@ const new_colis = async (req, res) => {
     const { ville_A, ville_B, completed, status } = await req.body;
 
     try {
+        // Conversion de ville_A et ville_B en ObjectId pour comparaison correcte
+        const villeAObjectId = new mongoose.Types.ObjectId(ville_A);
+        const villeBObjectId = new mongoose.Types.ObjectId(ville_B);
+
         // Recherche d'une destination correspondant à ville_A et ville_B
         const destination = await Destination.findOne({
-            id_villeA: ville_A,
-            id_villeB: ville_B
+            id_villeA: villeAObjectId,
+            id_villeB: villeBObjectId
         });
 
         if (!destination) {
