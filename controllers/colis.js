@@ -80,7 +80,21 @@ const add_colis = async (req,res)=>{
 }
 
 const new_colis = async (req, res) => {
-    const { id_villeA, id_villeB, completed, status } = req.body;
+    const { 
+        id_villeA, 
+        id_villeB, 
+        completed, 
+        status, 
+
+        poids,
+        contenus,
+        valeur,
+
+        names,
+        tel,
+        adresse
+
+     } = req.body;
 
     try {
        
