@@ -5,6 +5,7 @@ const Compte = require('../models/Compte'); // Make sure to adjust the path
 const HistoriqueColis = require('../models/historiqueColis');
 const Agence = require('../models/agence');
 const Utilisation = require('../models/utilisation');
+const Destination = require('../models/destination');
 
 
 const all_colis = async (req,res)=>{
@@ -77,40 +78,36 @@ const add_colis = async (req,res)=>{
     }
 }
 
-const new_colis = async (req,res)=>{
-    const {
-        ville_A ,
-        ville_B ,
-        completed,
-        status
-    } = await req.body 
-    
-    const new_colis = new Colis({
-        codeColis,
-        poids,
-        contenu,
-        valeur,
-        source,
-        id_userA,
-        id_userB,
-        id_extensionA,
-        id_extensionB,
-        id_destination,
-        completed,
-        status,
-        id_tarif,
-
-        id_agence
-    })
+const new_colis = async (req, res) => {
+    const { ville_A, ville_B, completed, status } = await req.body;
 
     try {
-        const saved_colis = await new_colis.save()
-        res.status(201).json(saved_colis)
+        // Recherche d'une destination correspondant à ville_A et ville_B
+        const destination = await Destination.findOne({
+            id_villeA: ville_A,
+            id_villeB: ville_B
+        });
+
+        if (!destination) {
+            return res.status(404).json({ message: 'Cette destination n\'existe pas.' });
+        }
+
+        // Création d'un nouveau colis avec les informations fournies et l'id de destination
+        const newColis = new Colis({
+            id_destination: destination._id,
+            status,
+            completed
+        });
+
+        const savedColis = await newColis.save();
+        res.status(201).json(savedColis);
+
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+        console.log(error);
+        res.status(500).json(error.message);
     }
-}
+};
+
 
 const delete_colis = async (req,res) => {
     const { id } = req.params;
