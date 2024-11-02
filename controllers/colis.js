@@ -109,10 +109,24 @@ const new_colis = async (req, res) => {
         }
 
         
+        const user = await User.findOne({ phoneUser: tel })
+
+        if(user){
+            console.log('Ce numero existe déjà !')
+            return res.status(201).json({message:'Ce numero existe déjà !', colis: savedColis});
+        }
         
-        // names,
-        // tel,
-        // adresse
+        // Créer un nouvel utilisateur avec les informations fournies
+        const newUser = new User({
+            nomUser: names,
+            phoneUser: tel,
+            adresseUser: adresse,
+            role:"beneficiaire"
+        });
+
+        // Sauvegarder le nouvel utilisateur dans la base de données
+        const savedUser = await newUser.save();
+
 
         // Création d'un nouveau colis avec les informations fournies et l'id de destination
         const newColis = new Colis({
@@ -124,6 +138,7 @@ const new_colis = async (req, res) => {
             contenus,
             valeur,
 
+            id_userA: savedUser._id
         });
 
         const savedColis = await newColis.save();
