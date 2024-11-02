@@ -113,7 +113,7 @@ const new_colis = async (req, res) => {
 
         if(user){
             console.log('Ce numero existe déjà !')
-            return res.status(201).json({message:'Ce numero existe déjà !', colis: savedColis});
+            throw new Error('Ce numero existe déjà !');
         }
         
         // Créer un nouvel utilisateur avec les informations fournies
@@ -135,7 +135,7 @@ const new_colis = async (req, res) => {
             completed,
 
             poids,
-            contenus,
+            contenu: contenus,
             valeur,
 
             id_userA: savedUser._id
