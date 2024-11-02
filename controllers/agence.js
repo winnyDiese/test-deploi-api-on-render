@@ -156,6 +156,10 @@ const get_agence_by_destination = async (req, res) => {
             .populate('id_destination') // Populate the id_destination field with the related Destination documents
             .exec();
 
+        const id_agence = agence_destinations.id_agence
+
+        
+
         // Step 3: Return the found entries
         res.status(200).json(agence_destinations);
     } catch (error) {
