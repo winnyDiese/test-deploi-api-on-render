@@ -138,33 +138,33 @@ const get_agences_with_comptes = async (req, res) => {
 };
 
 const get_agence_by_destination = async (req, res) => {
-    const { id_colis } = req.params; // Get the id_colis from the request parameters
+    const { id_colis } = req.params;
 
     try {
-        // Step 1: Find the Colis by its ID and retrieve the id_destination
+        // Étape 1 : Trouver le Colis par son ID et obtenir l'id_destination
         const colis = await Colis.findById(id_colis);
-
         if (!colis) {
             return res.status(404).json({ message: "Colis non trouvé !" });
         }
 
         const id_destination = colis.id_destination;
 
-        // Step 2: Find all AgenceDestination entries with the retrieved id_destination
+        // Étape 2 : Trouver toutes les entrées AgenceDestination avec l'id_destination
         const agence_destinations = await AgenceDestination.find({ id_destination })
-            .populate('id_agence') // Populate the id_agence field with the related Agence documents
-            .populate('id_destination') // Populate the id_destination field with the related Destination documents
+            .populate('id_agence') // Récupérer les documents Agence liés
+            .populate('id_destination') // Récupérer les documents Destination liés
             .exec();
 
-        const id_agence = agence_destinations.id_agence
+        // Filtrer les agences qui remplissent les conditions : solde > 0 et active est true
+        const eligible_agences = agence_destinations
+            .map((agence_destination) => agence_destination.id_agence) // Extraire les agences
+            .filter((agence) => agence.solde > 0 && agence.active); // Appliquer les conditions
 
-        
-
-        // Step 3: Return the found entries
-        res.status(200).json(agence_destinations);
+        // Étape 3 : Retourner les agences éligibles
+        res.status(200).json(eligible_agences);
     } catch (error) {
-        console.log(error);
-        res.status(500).json(error.message);
+        console.error(error);
+        res.status(500).json({ message: error.message });
     }
 };
 
