@@ -12,7 +12,8 @@ const { default: mongoose } = require('mongoose');
 const all_colis = async (req,res)=>{
     try {
 
-        const colis = await Colis.find({completed:true})
+        // const colis = await Colis.find({completed:true})
+        const colis = await Colis.find()
         .populate('id_userA')
         .populate('id_userB')
         .populate('id_agence')
