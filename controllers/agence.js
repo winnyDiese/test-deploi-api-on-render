@@ -20,8 +20,8 @@ const all_agence = async (req,res)=>{
 }
 
 const add_agence = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde} = await req.body
-    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde})
+    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde, demande_partenariat} = await req.body
+    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde, demande_partenariat})
     
     try {
         const saved_agence = await new_agence.save()
