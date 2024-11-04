@@ -18,7 +18,7 @@ const agenceSchema = new mongoose.Schema({
     active: Boolean,
     solde: Number,
 
-    demande_partenariat: { type: Boolean, default: false } // Valeur par défaut false
+    demande_partenariat: { type: Boolean, default: true } // Valeur par défaut false
 
 },{ timestamps: true })
 
