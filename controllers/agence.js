@@ -130,7 +130,7 @@ const get_inactive_agences = async (req, res) => {
 
 const get_demande_agences = async (req, res) => {
     try {
-        const inactive_agences = await Agence.find({  demande_partenariat: true }); // Recherche des agences inactives
+        const inactive_agences = await Agence.find({ demande_partenariat: true }); // Recherche des agences inactives
         res.status(200).json(inactive_agences); // Renvoie les agences inactives en réponse
     } catch (error) {
         console.log(error);
