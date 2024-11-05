@@ -3,6 +3,7 @@
 const Agence = require('../models/agence')
 const AgenceDestination = require('../models/agence-destination')
 const Colis = require('../models/colis')
+const Extension = require('../models/extension')
 
 // const Agence = require('./models/Agence'); // Assurez-vous que le chemin est correct
 // const Compte = require('./models/Compte'); // Assurez-vous que le chemin est correct
