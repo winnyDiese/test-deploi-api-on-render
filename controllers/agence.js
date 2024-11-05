@@ -19,18 +19,46 @@ const all_agence = async (req,res)=>{
     }
 }
 
-const add_agence = async (req,res) => {
-    const {nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde, demande_partenariat} = await req.body
-    const new_agence = new Agence({nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde, demande_partenariat})
+const add_agence = async (req, res) => {
+    const { nomAgence, phoneAgence, adresseAgence, emailAgence, logo, active, solde, demande_partenariat, ville } = req.body;
+    
+    const new_agence = new Agence({ 
+        nomAgence, 
+        phoneAgence, 
+        adresseAgence, 
+        emailAgence, 
+        logo, 
+        active, 
+        solde, 
+        demande_partenariat 
+    });
     
     try {
-        const saved_agence = await new_agence.save()
-        res.status(201).json(saved_agence)
+        // Sauvegarder l'agence dans la base de données
+        const saved_agence = await new_agence.save();
+        
+        // Créer une extension avec les informations de l'agence
+        const new_extension = new Extension({
+            nomExtension: nomAgence,
+            phoneExtension: phoneAgence,
+            adresseExtension: adresseAgence,
+            emailExtension: emailAgence,
+            localisation: ville, // Utilise "ville" comme localisation pour l'extension
+            id_agence: saved_agence._id, // Associer l'extension à l'agence créée
+            statutExtension: active
+        });
+        
+        // Sauvegarder l'extension dans la base de données
+        const saved_extension = await new_extension.save();
+
+        res.status(201).json({ saved_agence, saved_extension });
+        
     } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
+        console.log(error);
+        res.status(500).json(error.message);
     }
-}
+};
+
 
 const delete_agence = async (req,res) => {
     const { id } = req.params;
