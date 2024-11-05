@@ -45,7 +45,8 @@ const add_agence = async (req, res) => {
             emailExtension: emailAgence,
             localisation: ville, // Utilise "ville" comme localisation pour l'extension
             id_agence: saved_agence._id, // Associer l'extension à l'agence créée
-            statutExtension: active
+            statutExtension: active,
+            id_ville:ville
         });
         
         // Sauvegarder l'extension dans la base de données
