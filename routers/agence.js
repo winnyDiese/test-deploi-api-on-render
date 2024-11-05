@@ -1,6 +1,6 @@
 
 const express = require('express')
-const { all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination} = require('../controllers/agence')
+const { all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination, get_demande_agences} = require('../controllers/agence')
 const router = express.Router()
 
 
@@ -14,6 +14,7 @@ router.get('/agence/by-destination/:id_colis', get_agence_by_destination)
 
 router.get('/agence/active', get_active_agences)
 router.get('/agence/desactive', get_inactive_agences)
+router.get('/agence/demande', get_demande_agences)
 router.get('/agence/:id', one_agence)
 
 

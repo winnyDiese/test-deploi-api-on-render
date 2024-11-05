@@ -128,6 +128,16 @@ const get_inactive_agences = async (req, res) => {
     }
 };
 
+const get_demande_agences = async (req, res) => {
+    try {
+        const inactive_agences = await Agence.find({  demande_partenariat: true }); // Recherche des agences inactives
+        res.status(200).json(inactive_agences); // Renvoie les agences inactives en réponse
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error.message); // Gère les erreurs et renvoie un message d'erreur
+    }
+};
+
 const get_agences_with_comptes = async (req, res) => {
     try {
         const agences_with_comptes = await Agence.aggregate([
@@ -198,4 +208,4 @@ const get_agence_by_destination = async (req, res) => {
     }
 };
 
-module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination}
+module.exports = {all_agence, add_agence, delete_agence, update_agence, one_agence,get_active_agences,get_inactive_agences, get_agences_with_comptes, get_agence_by_destination, get_demande_agences}
