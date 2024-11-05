@@ -110,7 +110,7 @@ const one_agence = async (req,res) => {
 
 const get_active_agences = async (req, res) => {
     try {
-        const active_agences = await Agence.find({ active: true }); // Recherche des agences actives
+        const active_agences = await Agence.find({ active: true, demande_partenariat:false }); // Recherche des agences actives
         res.status(200).json(active_agences); // Renvoie les agences actives en réponse
     } catch (error) {
         console.log(error);
@@ -120,7 +120,7 @@ const get_active_agences = async (req, res) => {
 
 const get_inactive_agences = async (req, res) => {
     try {
-        const inactive_agences = await Agence.find({ active: false }); // Recherche des agences inactives
+        const inactive_agences = await Agence.find({ active: false, demande_partenariat:false }); // Recherche des agences inactives
         res.status(200).json(inactive_agences); // Renvoie les agences inactives en réponse
     } catch (error) {
         console.log(error);
