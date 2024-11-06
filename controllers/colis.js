@@ -562,12 +562,12 @@ const countColisByStatus = async (req, res) => {
     try {
       // Compter le nombre de colis pour chaque statut
       const statusCounts = await Promise.all([
-        Colis.countDocuments({ status: "demande" }),
-        Colis.countDocuments({ status: "depot" }),
-        Colis.countDocuments({ status: "charge" }),
-        Colis.countDocuments({ status: "en cours" }),
-        Colis.countDocuments({ status: "arrive" }),
-        Colis.countDocuments({ status: "retire" }),
+        Colis.countDocuments({ completed: true, status: "demande" }),
+        Colis.countDocuments({ completed: true, status: "depot" }),
+        Colis.countDocuments({ completed: true, status: "charge" }),
+        Colis.countDocuments({ completed: true, status: "en cours" }),
+        Colis.countDocuments({ completed: true, status: "arrive" }),
+        Colis.countDocuments({ completed: true, status: "retire" }),
         Colis.countDocuments({}),
 
       ]);
