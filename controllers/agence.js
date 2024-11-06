@@ -62,13 +62,27 @@ const add_agence = async (req, res) => {
 };
 
 
+
+
 const delete_agence = async (req,res) => {
     const { id } = req.params;
     try {
-        const deleted_agence = await Agence.findByIdAndDelete(id)
+        // Delete the Agence by ID
+        const deleted_agence = await Agence.findByIdAndDelete(id);
 
-        if (!deleted_agence) return res.status(404).json({ message: 'Agence non, trouvé !' });
-        res.status(200).json({ message: 'Un Agence a été supprimé avec sucées !', agence: deleted_agence });
+        // Check if the Agence exists
+        if (!deleted_agence) {
+            return res.status(404).json({ message: 'Agence non trouvé !' });
+        }
+
+        // Delete all extensions linked to the Agence by id_agence
+        await Extension.deleteMany({ id_agence: id });
+
+        // Send success response
+        res.status(200).json({
+            message: 'L\'Agence et ses extensions associées ont été supprimées avec succès !',
+            agence: deleted_agence
+        });
 
     } catch (error) {
         console.log(error)
