@@ -15,8 +15,8 @@ const all_messages = async (req, res) => {
 const add_message = async (req, res) => {
     const { dateNotif, id_user_notif, names, tel, email, message } = req.body;
 
-    if (!dateNotif || !id_user_notif || !names || !message) {
-        return res.status(402).send("All fields are required!");
+    if ( !message) {
+        return res.status(402).send("Le message est obligatoire !");
     }
 
     try {
