@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     id_ville:String,
     statutUser:String,
     role:String,
+    id_agence:String,
     authTokens: [{
         authToken: {
             type: String,
