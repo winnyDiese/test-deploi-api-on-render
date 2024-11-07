@@ -205,15 +205,17 @@ const update_user = async (req,res) => {
     
     try {
         const {id} = req.params
-        const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser } = req.body
+        const {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser,id_agence } = req.body
 
-        const phoneExist = await User.findOne({phoneUser})
-        if(phoneExist && phoneExist._id.toString() !== id)  return res.status(400).json({ message: 'Numero de telephone existe déjà.' });
+        if(phoneUser){
+            const phoneExist = await User.findOne({phoneUser})
+            if(phoneExist && phoneExist._id.toString() !== id)  return res.status(400).json({ message: 'Numero de telephone existe déjà.' });
+        }
 
 
         const updated_user = await User.findByIdAndUpdate(
             id, 
-            {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser }, 
+            {nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUSer, sexe, id_typeUser, id_ville, statutUser, id_agence }, 
             {new:true}
         )
 
@@ -403,7 +405,7 @@ const me = async (req, res) => {
 
 const new_user = async (req, res) => {
     const { nomUser, fonctionAgent, phoneUser, passwordUser, emailUser, adresseUser, sexe, id_typeUser, id_ville, statutUser, role } = req.body;
-  
+
     try {
       // Creating a new instance of User
       const newUser = new User({
@@ -452,7 +454,8 @@ module.exports = {
     login, 
     logout, 
     one_user,
-    delete_user,update_user,
+    delete_user,
+    update_user,
     one_user_by_tel,
     one_user_by_type_user,
     one_user_by_status,
