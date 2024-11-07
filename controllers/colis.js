@@ -685,9 +685,9 @@ const colisByClient = async (req, res) => {
         .sort({ createdAt: -1 }); // Trier par date de création (descendant)
   
       // Vérifier si des colis ont été trouvés
-      if (!colis || colis.length === 0) {
-        return res.status(404).json({ message: 'Aucun colis trouvé pour cet utilisateur' });
-      }
+    //   if (!colis || colis.length === 0) {
+    //     return res.status(404).json({ message: 'Aucun colis trouvé pour cet utilisateur' });
+    //   }
   
       // Retourner les colis trouvés
       res.status(200).json(colis);
