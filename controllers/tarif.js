@@ -109,4 +109,33 @@ const one_tarif = async (req,res) => {
 
 }
 
-module.exports = {all_tarif, add_tarif,one_tarif,delete_tarif,update_tarif}
+const all_tarif_by_agence = async (req, res) => {
+    try {
+        const { id_agence } = req.params;
+
+        // Rechercher les documents dans AgenceDestination où id_agence correspond à l'id_agence fourni
+        const agenceDestinations = await AgenceDestination.find({ id_agence: id_agence }).select('_id');
+        
+        // Extraire les _id des documents trouvés pour les utiliser comme filtres dans la recherche des tarifs
+        const agenceDestinationIds = agenceDestinations.map(agenceDest => agenceDest._id);
+
+        // Rechercher les tarifs où id_agence_dest correspond à un des ids trouvés dans AgenceDestination
+        const tarifs = await Tarif.find({ id_agence_dest: { $in: agenceDestinationIds } })
+            .populate({
+                path: 'id_destination',
+                populate: [
+                    { path: 'id_villeA' }, // Populer id_villeA à l'intérieur de id_destination
+                    { path: 'id_villeB' }  // Populer id_villeB à l'intérieur de id_destination
+                ]
+            })
+            .populate('id_agence_dest'); // Populer l'agence associée
+
+        res.status(200).json(tarifs);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Une erreur est survenue !');
+    }
+};
+
+
+module.exports = {all_tarif, add_tarif,one_tarif,delete_tarif,update_tarif,all_tarif_by_agence}
